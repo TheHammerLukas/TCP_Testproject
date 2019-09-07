@@ -45,7 +45,7 @@ namespace TCP_Testproject.Classes
 
             // Start listening for client requests.
             chatObjects.server.Start();
-
+            
             ServerListen();
         }
 
