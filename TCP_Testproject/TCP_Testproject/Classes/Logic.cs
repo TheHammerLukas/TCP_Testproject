@@ -118,9 +118,9 @@ namespace TCP_Testproject.Classes
                 bufferincmessage = encoder.GetString(message, 0, bytesRead);
                 byte[] buffer = encoder.GetBytes(bufferincmessage);
 
-                clientStream.Write(buffer, 0, buffer.Length);
+                clientStream.WriteAsync(buffer, 0, buffer.Length);
                 Console.WriteLine("Sent: {0}", bufferincmessage);
-                clientStream.Flush();
+                //clientStream.Flush();
             }
         }
 
@@ -142,6 +142,10 @@ namespace TCP_Testproject.Classes
 
         private static void ClientListenSend()
         {
+            Thread clientlisten = new Thread(new ThreadStart(ClientListen));
+
+            clientlisten.Start();
+
             // Get a client stream for reading and writing.
             //  Stream stream = client.GetStream();
             NetworkStream stream = chatObjects.client.GetStream();
@@ -150,8 +154,6 @@ namespace TCP_Testproject.Classes
             {
                 while (true)
                 {
-                    Output.PrintScreen();
-
                     string message = Console.ReadLine();
 
                     // Translate the passed message into ASCII and store it as a Byte array.
@@ -161,20 +163,6 @@ namespace TCP_Testproject.Classes
                     stream.Write(data, 0, data.Length);
 
                     chatObjects.messageData.Add(new Message(message, Constants.alignmentRight));
-
-                    // Receive the TcpServer.response.
-
-                    // Buffer to store the response bytes.
-                    data = new Byte[256];
-
-                    // String to store the response ASCII representation.
-                    String responseData = String.Empty;
-
-                    // Read the first batch of the TcpServer response bytes.
-                    Int32 bytes = stream.Read(data, 0, data.Length);
-                    responseData = System.Text.Encoding.ASCII.GetString(data, 0, bytes);
-
-                    chatObjects.messageData.Add(new Message(responseData, Constants.alignmentLeft));
                 }
             }
             catch (ArgumentNullException e)
@@ -191,6 +179,35 @@ namespace TCP_Testproject.Classes
             chatObjects.client.Close();
             Console.WriteLine("\n Press Enter to continue...");
             Console.Read();
+        }
+
+        private static void ClientListen()
+        {
+            while (true)
+            {
+                Byte[] data;
+
+                // Get a client stream for reading and writing.
+                //  Stream stream = client.GetStream();
+                NetworkStream stream = chatObjects.client.GetStream();
+
+                // Receive the TcpServer.response.
+
+                // Buffer to store the response bytes.
+                data = new Byte[256];
+
+                // String to store the response ASCII representation.
+                String responseData = String.Empty;
+
+                // Read the first batch of the TcpServer response bytes.
+                Int32 bytes = stream.Read(data, 0, data.Length);
+                responseData = System.Text.Encoding.ASCII.GetString(data, 0, bytes);
+
+                chatObjects.messageData.Add(new Message(responseData, Constants.alignmentLeft));
+
+                Output.PrintScreen();
+                Console.WriteLine("test");
+            }
         }
     }
 }
