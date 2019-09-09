@@ -18,5 +18,11 @@ namespace TCP_Testproject.Classes
     {
         public string message { get; set; }
         public string alignment { get; set; }
+
+        public Message(string message, string alignment)
+        {
+            this.message = message;
+            this.alignment = alignment;
+        }
     }
 }

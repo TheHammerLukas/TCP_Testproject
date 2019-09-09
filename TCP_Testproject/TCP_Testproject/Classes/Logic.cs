@@ -142,7 +142,7 @@ namespace TCP_Testproject.Classes
                     // Send the message to the connected TcpServer. 
                     stream.Write(data, 0, data.Length);
 
-                    Console.WriteLine("Sent: {0}", message);
+                    chatObjects.messageData.Add(new Message(message, Constants.alignmentRight));
 
                     // Receive the TcpServer.response.
 
@@ -155,7 +155,8 @@ namespace TCP_Testproject.Classes
                     // Read the first batch of the TcpServer response bytes.
                     Int32 bytes = stream.Read(data, 0, data.Length);
                     responseData = System.Text.Encoding.ASCII.GetString(data, 0, bytes);
-                    Console.WriteLine("Received: {0}", responseData);
+
+                    chatObjects.messageData.Add(new Message(responseData, Constants.alignmentLeft));
                 }
             }
             catch (ArgumentNullException e)

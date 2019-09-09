@@ -94,14 +94,16 @@ namespace TCP_Testproject.Classes
             switch (textAlignment)
             {
                 case Constants.alignmentLeft:
-
+                    Console.SetCursorPosition(Console.CursorLeft, Console.CursorTop);
+                    Console.WriteLine(outputString);
                     break;
                 case Constants.alignmentCenter:
                     Console.SetCursorPosition((Console.WindowWidth - outputString.Length) / 2, Console.CursorTop);
                     Console.WriteLine(outputString);
                     break;
                 case Constants.alignmentRight:
-
+                    Console.SetCursorPosition(Console.WindowWidth - outputString.Length, Console.CursorTop);
+                    Console.WriteLine(outputString);
                     break;
             }
         }
