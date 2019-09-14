@@ -11,6 +11,7 @@ namespace TCP_Testproject.Classes
     {
         public List<Message> messageData = new List<Message>();
         public TcpListener server = null;
+        public List<TcpClient> clientList = new List<TcpClient>();
         public TcpClient client = null;
     }
 

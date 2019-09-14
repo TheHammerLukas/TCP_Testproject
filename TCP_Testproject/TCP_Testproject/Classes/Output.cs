@@ -10,24 +10,15 @@ namespace TCP_Testproject.Classes
     {
         static public void PrintScreen()
         {
-            string _outputString = "";
-            string _textAlignment = "";
-
             PrintHeader();
 
-            if (Logic.chatState == Constants.ProgramState.connected)
+            if (Logic.chatState == Constants.ProgramState.initializing)
             {
-                for (int i = 0; i < Logic.chatObjects.messageData.Count; i++)
-                {
-                    _outputString = Logic.chatObjects.messageData[i].message;
-                    _textAlignment = Logic.chatObjects.messageData[i].alignment;
-
-                    PrintString(_outputString, _textAlignment);
-                }
+                PrintInitInterface();
             }
-            else if (Logic.chatState == Constants.ProgramState.initializing)
+            else if (Logic.chatState == Constants.ProgramState.connected)
             {
-                PrintString("Host server | Connect as Client [H|C]", Constants.alignmentCenter);
+                PrintClientInterface();
             }
         }
 
@@ -87,6 +78,30 @@ namespace TCP_Testproject.Classes
                 Console.Write("=");
             }
             Console.WriteLine("///");
+        }
+
+        static private void PrintInitInterface()
+        {
+            PrintString("Host server | Connect as Client [H|C]", Constants.alignmentCenter);
+        }
+
+        static private void PrintClientInterface()
+        {
+            string _outputString = "";
+            string _textAlignment = "";
+
+            for (int i = 0; i < Logic.chatObjects.messageData.Count; i++)
+            {
+                _outputString = Logic.chatObjects.messageData[i].message;
+                _textAlignment = Logic.chatObjects.messageData[i].alignment;
+
+                PrintString(_outputString, _textAlignment);
+            }
+            for (int i = 0; i < Console.WindowWidth; i++)
+            {
+                Console.Write("-");
+            }
+            PrintString("Type your message and press enter to send:", Constants.alignmentLeft);
         }
 
         static private void PrintString(string outputString, string textAlignment)
