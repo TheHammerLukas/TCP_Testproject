@@ -133,7 +133,9 @@ namespace TCP_Testproject.Classes
                         NetworkStream broadcastStream = broadcastMember.GetStream();
 
                         broadcastStream.Write(buffer, 0, buffer.Length);
-                        Console.WriteLine("Sent to {0}: {1}", broadcastStream.ToString(), bufferincmessage);
+                        Console.WriteLine("Sent to {0}: {1}", 
+                                          ((IPEndPoint)broadcastMember.Client.RemoteEndPoint).Address.ToString(), 
+                                          bufferincmessage);
                     }
                 }
             }
