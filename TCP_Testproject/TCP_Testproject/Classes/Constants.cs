@@ -22,5 +22,9 @@ namespace TCP_Testproject.Classes
             connected,
             exit
         };
+
+        // Delimiter constants
+        public const string delimUsername = ":#USERNAME:";
+        public const string delimMsgData = ":#MSGDATA:";
     }
 }

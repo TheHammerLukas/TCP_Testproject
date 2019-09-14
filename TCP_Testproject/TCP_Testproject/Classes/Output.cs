@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace TCP_Testproject.Classes
 {
@@ -15,6 +11,10 @@ namespace TCP_Testproject.Classes
             if (Logic.chatState == Constants.ProgramState.initializing)
             {
                 PrintInitInterface();
+            }
+            if (Logic.chatState == Constants.ProgramState.initialized)
+            {
+                PrintClientCreate();
             }
             else if (Logic.chatState == Constants.ProgramState.connected)
             {
@@ -85,6 +85,11 @@ namespace TCP_Testproject.Classes
             PrintString("Host server | Connect as client [H|C]", Constants.alignmentCenter);
         }
 
+        static private void PrintClientCreate()
+        {
+            PrintString("Enter your desired username:", Constants.alignmentCenter);
+        }
+
         static private void PrintClientInterface()
         {
             string _outputString = "";
@@ -94,6 +99,12 @@ namespace TCP_Testproject.Classes
             {
                 _outputString = Logic.chatObjects.messageData[i].message;
                 _textAlignment = Logic.chatObjects.messageData[i].alignment;
+
+                // Only display the username if it is a message that has been received from the server
+                if (_textAlignment == Constants.alignmentLeft)
+                {
+                    _outputString = Logic.chatObjects.messageData[i].username + ": " + _outputString;
+                }
 
                 PrintString(_outputString, _textAlignment);
             }

@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace TCP_Testproject.Classes
 {
@@ -30,6 +28,9 @@ namespace TCP_Testproject.Classes
             }
             else if (_input == "C")
             {
+                Output.PrintScreen();
+                chatObjects.clientName = Console.ReadLine();
+
                 chatState = Constants.ProgramState.connecting;
                 ClientCreate();
             }
@@ -50,10 +51,10 @@ namespace TCP_Testproject.Classes
             // Start listening for client requests.
             chatObjects.server.Start();
             
-            ServerListen();
+            ServerHandleClients();
         }
 
-        private static void ServerListen()
+        private static void ServerHandleClients()
         {
             try
             {
@@ -66,7 +67,7 @@ namespace TCP_Testproject.Classes
                     // You could also user server.AcceptSocket() here.
                     TcpClient client = chatObjects.server.AcceptTcpClient();
 
-                    ThreadPool.QueueUserWorkItem(HandleClientComm, client);
+                    ThreadPool.QueueUserWorkItem(ServerListenSend, client);
 
                     Console.WriteLine("Connected!");
                 }
@@ -82,7 +83,7 @@ namespace TCP_Testproject.Classes
             }
         }
 
-        private static void HandleClientComm(object client)
+        private static void ServerListenSend(object client)
         {
             if (!chatObjects.clientList.Contains(client))
             {
@@ -135,7 +136,6 @@ namespace TCP_Testproject.Classes
                         Console.WriteLine("Sent to {0}: {1}", broadcastStream.ToString(), bufferincmessage);
                     }
                 }
-                //clientStream.Flush();
             }
         }
 
@@ -176,12 +176,13 @@ namespace TCP_Testproject.Classes
                     string message = Console.ReadLine();
 
                     // Translate the passed message into ASCII and store it as a Byte array.
-                    Byte[] data = System.Text.Encoding.ASCII.GetBytes(message);
+                    Byte[] data = System.Text.Encoding.ASCII.GetBytes(Constants.delimUsername + chatObjects.clientName + 
+                                                                      Constants.delimMsgData + message);
 
                     // Send the message to the connected TcpServer. 
                     stream.Write(data, 0, data.Length);
 
-                    chatObjects.messageData.Add(new Message(message, Constants.alignmentRight));
+                    chatObjects.messageData.Add(new Message(chatObjects.clientName, message, Constants.alignmentRight));
 
                     // Print the screen
                     Output.PrintScreen();
@@ -213,17 +214,37 @@ namespace TCP_Testproject.Classes
 
             while (true)
             {
-                byte[] message = new byte[4096];
+                byte[] receivedData = new byte[4096];
                 int bytesRead = 0;
 
-                // Receive the TcpServer response
-                // blocks until a client sends a message
-                bytesRead = clientStream.Read(message, 0, 4096);
-                
-                chatObjects.messageData.Add(new Message(encoder.GetString(message, 0, bytesRead), Constants.alignmentLeft));
+                string dataString = "";
+                string username = "";
+                string message = "";
+                int startPosUsername = 0;
+                int startPosMessage = 0;
 
-                // Print the screen
-                Output.PrintScreen();
+                // Receive the TcpServer response
+                try
+                {
+                    // blocks until a client sends a message
+                    bytesRead = clientStream.Read(receivedData, 0, 4096);
+
+                    // decode the received data
+                    dataString = encoder.GetString(receivedData, 0, bytesRead);
+                    startPosUsername = dataString.IndexOf(Constants.delimUsername, 0) + Constants.delimUsername.Length;
+                    startPosMessage = dataString.IndexOf(Constants.delimMsgData, 0) + Constants.delimMsgData.Length;
+                    username = dataString.Substring(startPosUsername, startPosMessage - Constants.delimMsgData.Length - startPosUsername);
+                    message = dataString.Substring(startPosMessage);
+
+                    chatObjects.messageData.Add(new Message(username, message, Constants.alignmentLeft));
+
+                    // Print the screen
+                    Output.PrintScreen();
+                }
+                catch
+                {
+                    
+                }
             }
         }
     }
