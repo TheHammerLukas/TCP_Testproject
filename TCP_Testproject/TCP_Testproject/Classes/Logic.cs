@@ -43,7 +43,7 @@ namespace TCP_Testproject.Classes
 
             // Home: 192.168.178.34
             // Work: 10.110.113.233
-            IPAddress ipAddress = IPAddress.Parse("192.168.178.34");
+            IPAddress ipAddress = IPAddress.Parse("127.0.0.1");
 
             chatObjects.server = new TcpListener(ipAddress, port);
 
@@ -121,17 +121,18 @@ namespace TCP_Testproject.Classes
                 }
 
                 //message has successfully been received
+                // Broadcast recieved message to all clients except the client that sent the information
                 bufferincmessage = encoder.GetString(message, 0, bytesRead);
                 byte[] buffer = encoder.GetBytes(bufferincmessage);
 
-                foreach (TcpClient c in chatObjects.clientList)
+                foreach (TcpClient broadcastMember in chatObjects.clientList)
                 {
-                    if (c != client)
+                    if (broadcastMember != client)
                     {
-                        NetworkStream broadcastStream = c.GetStream();
+                        NetworkStream broadcastStream = broadcastMember.GetStream();
 
                         broadcastStream.Write(buffer, 0, buffer.Length);
-                        Console.WriteLine("Sent to {0}: {1}", c.Client, bufferincmessage);
+                        Console.WriteLine("Sent to {0}: {1}", broadcastStream.ToString(), bufferincmessage);
                     }
                 }
                 //clientStream.Flush();
@@ -148,7 +149,7 @@ namespace TCP_Testproject.Classes
             
             // Home: 192.168.178.34
             // Work: 10.110.113.233
-            string ipAddress = "192.168.178.34";
+            string ipAddress = "127.0.0.1";
 
             chatObjects.client = new TcpClient(ipAddress, port);
 
@@ -156,14 +157,17 @@ namespace TCP_Testproject.Classes
 
             ThreadPool.QueueUserWorkItem(ClientListen, chatObjects.client);
 
-            ClientListenSend();
+            ClientSend();
         }
 
-        private static void ClientListenSend()
+        private static void ClientSend()
         {
             // Get a client stream for reading and writing.
             //  Stream stream = client.GetStream();
             NetworkStream stream = chatObjects.client.GetStream();
+
+            // Print the screen
+            Output.PrintScreen();
 
             try
             {
@@ -178,6 +182,9 @@ namespace TCP_Testproject.Classes
                     stream.Write(data, 0, data.Length);
 
                     chatObjects.messageData.Add(new Message(message, Constants.alignmentRight));
+
+                    // Print the screen
+                    Output.PrintScreen();
                 }
             }
             catch (ArgumentNullException e)

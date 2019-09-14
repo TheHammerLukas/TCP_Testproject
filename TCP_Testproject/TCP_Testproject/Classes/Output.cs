@@ -82,7 +82,7 @@ namespace TCP_Testproject.Classes
 
         static private void PrintInitInterface()
         {
-            PrintString("Host server | Connect as Client [H|C]", Constants.alignmentCenter);
+            PrintString("Host server | Connect as client [H|C]", Constants.alignmentCenter);
         }
 
         static private void PrintClientInterface()
@@ -113,11 +113,11 @@ namespace TCP_Testproject.Classes
                     Console.WriteLine(outputString);
                     break;
                 case Constants.alignmentCenter:
-                    Console.SetCursorPosition((Console.WindowWidth - outputString.Length) / 2, Console.CursorTop);
+                    Console.SetCursorPosition(((Console.WindowWidth - outputString.Length) / 2) - 1, Console.CursorTop);
                     Console.WriteLine(outputString);
                     break;
                 case Constants.alignmentRight:
-                    Console.SetCursorPosition(Console.WindowWidth - outputString.Length, Console.CursorTop);
+                    Console.SetCursorPosition((Console.WindowWidth - outputString.Length) - 1, Console.CursorTop);
                     Console.WriteLine(outputString);
                     break;
             }
