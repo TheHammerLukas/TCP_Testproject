@@ -28,9 +28,6 @@ namespace TCP_Testproject.Classes
             }
             else if (_input == "C")
             {
-                Output.PrintScreen();
-                chatObjects.clientName = Console.ReadLine();
-
                 chatState = Constants.ProgramState.connecting;
                 ClientCreate();
             }
@@ -85,11 +82,14 @@ namespace TCP_Testproject.Classes
 
         private static void ServerListenSend(object client)
         {
-            if (!chatObjects.clientList.Contains(client))
-            {
-                chatObjects.clientList.Add((TcpClient)client);
-            }
             TcpClient tcpClient = (TcpClient)client;
+
+            // Add new TcpClients to the list of connected clients
+            if (!chatObjects.clientList.Contains(tcpClient))
+            {
+                chatObjects.clientList.Add(tcpClient);
+            }
+
             NetworkStream clientStream = tcpClient.GetStream();
 
             ASCIIEncoding encoder = new ASCIIEncoding();
@@ -139,10 +139,18 @@ namespace TCP_Testproject.Classes
                     }
                 }
             }
+
+            // Close everything in order for the server not to crash when a user disconnects
+            clientStream.Close();
+            chatObjects.clientList.Remove(tcpClient);
+            tcpClient.Close();
         }
 
         private static void ClientCreate()
         {
+            Output.PrintScreen();
+            chatObjects.clientName = Console.ReadLine();
+
             // Create a TcpClient.
             // Note, for this client to work you need to have a TcpServer 
             // connected to the same address as specified by the server, port

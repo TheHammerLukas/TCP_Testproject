@@ -12,7 +12,11 @@ namespace TCP_Testproject.Classes
             {
                 PrintInitInterface();
             }
-            if (Logic.chatState == Constants.ProgramState.initialized)
+            else if (Logic.chatState == Constants.ProgramState.initialized)
+            {
+
+            }
+            else if (Logic.chatState == Constants.ProgramState.connecting)
             {
                 PrintClientCreate();
             }
