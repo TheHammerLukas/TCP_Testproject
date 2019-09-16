@@ -109,7 +109,7 @@ namespace TCP_Testproject.Classes
                 {
                     _outputString = Logic.chatObjects.messageData[i].username + ": " + _outputString;
                 }
-
+                <
                 PrintString(_outputString, _textAlignment);
             }
             for (int i = 0; i < Console.WindowWidth; i++)
