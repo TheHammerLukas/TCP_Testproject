@@ -132,7 +132,15 @@ namespace TCP_Testproject.Classes
                     Console.WriteLine(outputString);
                     break;
                 case Constants.alignmentRight:
-                    Console.SetCursorPosition((Console.WindowWidth - outputString.Length) - 1, Console.CursorTop);
+                    // Do not go below 0 or an error will occur; Cursorleft is the minimun value for the console bounds; Otherwise clients will crash
+                    if ((Console.WindowWidth - outputString.Length) -1 < 0)
+                    {
+                        Console.SetCursorPosition(Console.CursorLeft, Console.CursorTop);
+                    }
+                    else
+                    {
+                        Console.SetCursorPosition((Console.WindowWidth - outputString.Length) - 1, Console.CursorTop);
+                    }
                     Console.WriteLine(outputString);
                     break;
             }
