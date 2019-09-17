@@ -20,6 +20,8 @@ namespace TCP_Testproject.Classes
             initialized,
             connecting,
             connected,
+            connectionerror,
+            communicating,
             exit
         };
 

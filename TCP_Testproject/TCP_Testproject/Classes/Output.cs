@@ -22,6 +22,14 @@ namespace TCP_Testproject.Classes
             }
             else if (Logic.chatState == Constants.ProgramState.connected)
             {
+                PrintClientConnectSuccess();
+            }
+            else if (Logic.chatState == Constants.ProgramState.connectionerror)
+            {
+                PrintClientConnectError();
+            }
+            else if (Logic.chatState == Constants.ProgramState.communicating)
+            {
                 PrintClientInterface();
             }
         }
@@ -92,6 +100,16 @@ namespace TCP_Testproject.Classes
         static private void PrintClientCreate()
         {
             PrintString("Enter your desired username:", Constants.alignmentCenter);
+        }
+
+        static private void PrintClientConnectSuccess()
+        {
+            PrintString("Successfully connected to the server!", Constants.alignmentCenter);
+        }
+
+        static private void PrintClientConnectError()
+        {
+            PrintString("Error while connecting to the server! Retrying in 5 seconds...", Constants.alignmentCenter);
         }
 
         static private void PrintClientInterface()

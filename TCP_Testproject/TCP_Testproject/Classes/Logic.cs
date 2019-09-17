@@ -161,9 +161,24 @@ namespace TCP_Testproject.Classes
             // Work: 10.110.113.233
             string ipAddress = "127.0.0.1";
 
-            chatObjects.client = new TcpClient(ipAddress, port);
+            do
+            {
+                try
+                {
+                    chatObjects.client = new TcpClient(ipAddress, port);
+                }
+                catch
+                {
+                    // Set chatState to connection error and retry to connect in 5 seconds
+                    chatState = Constants.ProgramState.connectionerror;
+                    Output.PrintScreen();
+                    Thread.Sleep(5000);
+                }
+            } while (!chatObjects.client.Connected);
 
             chatState = Constants.ProgramState.connected;
+            Output.PrintScreen();
+            Thread.Sleep(2000);
 
             ThreadPool.QueueUserWorkItem(ClientListen, chatObjects.client);
 
@@ -172,6 +187,8 @@ namespace TCP_Testproject.Classes
 
         private static void ClientSend()
         {
+            chatState = Constants.ProgramState.communicating;
+
             // Get a client stream for reading and writing.
             //  Stream stream = client.GetStream();
             NetworkStream stream = chatObjects.client.GetStream();
