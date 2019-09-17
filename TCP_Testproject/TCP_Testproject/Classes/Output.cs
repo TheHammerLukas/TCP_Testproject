@@ -127,7 +127,6 @@ namespace TCP_Testproject.Classes
                 {
                     _outputString = Logic.chatObjects.messageData[i].username + ": " + _outputString;
                 }
-                <
                 PrintString(_outputString, _textAlignment);
             }
             for (int i = 0; i < Console.WindowWidth; i++)
@@ -150,16 +149,16 @@ namespace TCP_Testproject.Classes
                     Console.WriteLine(outputString);
                     break;
                 case Constants.alignmentRight:
-                    // Do not go below 0 or an error will occur; Cursorleft is the minimun value for the console bounds; Otherwise clients will crash
+                    // Cursorleft is the minimun value for the console bounds; PrintString with alignment left => Client will not crash
                     if ((Console.WindowWidth - outputString.Length) -1 < 0)
                     {
-                        Console.SetCursorPosition(Console.CursorLeft, Console.CursorTop);
+                        PrintString(outputString, Constants.alignmentLeft);
                     }
                     else
                     {
                         Console.SetCursorPosition((Console.WindowWidth - outputString.Length) - 1, Console.CursorTop);
+                        Console.WriteLine(outputString);
                     }
-                    Console.WriteLine(outputString);
                     break;
             }
         }
