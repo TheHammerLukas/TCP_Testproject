@@ -41,7 +41,8 @@ namespace TCP_Testproject.Classes
 
             // Home: 192.168.178.34
             // Work: 10.110.113.233
-            IPAddress ipAddress = IPAddress.Parse("127.0.0.1");
+
+            IPAddress ipAddress = IPAddress.Any;
 
             chatObjects.server = new TcpListener(ipAddress, port);
 
@@ -159,7 +160,7 @@ namespace TCP_Testproject.Classes
             
             // Home: 192.168.178.34
             // Work: 10.110.113.233
-            string ipAddress = "127.0.0.1";
+            string ipAddress = "192.168.178.34";
 
             do
             {
