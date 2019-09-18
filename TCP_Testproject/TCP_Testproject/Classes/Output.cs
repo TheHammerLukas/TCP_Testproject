@@ -116,8 +116,27 @@ namespace TCP_Testproject.Classes
         {
             string _outputString = "";
             string _textAlignment = "";
-
+            int _cntMessageDisplay = 0;
             for (int i = 0; i < Logic.chatObjects.messageData.Count; i++)
+            {
+                if (Logic.chatObjects.messageData[i].username.Length + 2 + _outputString.Length == Console.WindowWidth * 2)
+                {
+                    _cntMessageDisplay += 3;
+                }
+                else if (Logic.chatObjects.messageData[i].username.Length + 2 + _outputString.Length == Console.WindowWidth)
+                {
+                    _cntMessageDisplay += 2;
+                }
+                else if (Logic.chatObjects.messageData[i].username.Length + 2 + _outputString.Length < Console.WindowWidth)
+                {
+                    _cntMessageDisplay += 1;
+                }
+            }
+
+            for (int i = Logic.chatObjects.messageData.Count - Console.WindowHeight + 6 < 0 ?
+                 0 : Logic.chatObjects.messageData.Count - Console.WindowHeight + 6;
+                 i < Logic.chatObjects.messageData.Count;
+                 i++)
             {
                 _outputString = Logic.chatObjects.messageData[i].message;
                 _textAlignment = Logic.chatObjects.messageData[i].alignment;
