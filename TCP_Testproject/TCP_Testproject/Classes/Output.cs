@@ -41,6 +41,7 @@ namespace TCP_Testproject.Classes
             PrintString("Help Menu:", Constants.alignmentCenter);
             PrintString("/bcblack = change to dark theme", Constants.alignmentLeft);
             PrintString("/bcwhite = change to white theme", Constants.alignmentLeft);
+            PrintString("/clear or /cls = clear screen", Constants.alignmentLeft);
             PrintString("Press any key to return to chat!", Constants.alignmentCenter);
 
             Console.ReadKey();

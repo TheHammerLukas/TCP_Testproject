@@ -12,6 +12,8 @@ namespace TCP_Testproject.Classes
         public const string chatCmdHelp = "/help";
         public const string chatCmdBcBlack = "/bcblack";
         public const string chatCmdBcWhite = "/bcwhite";
+        public const string chatCmdClear = "/clear";
+        public const string chatCmdCls = "/cls";
 
         // Text alignment constants
         public const string alignmentLeft = "alignLeft";

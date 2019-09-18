@@ -168,8 +168,9 @@ namespace TCP_Testproject.Classes
                     case Constants.chatCmdHelp:
                     case Constants.chatCmdBcBlack:
                     case Constants.chatCmdBcWhite:
+                    case Constants.chatCmdClear:
+                    case Constants.chatCmdCls:
                         WorkChatCommand(_userInput);
-                        Console.Clear();
                         break;
                     default:
                         byte[] buffer = encoder.GetBytes(Constants.delimUsername + "<Server>" + Constants.delimMsgData + _userInput);
@@ -249,6 +250,8 @@ namespace TCP_Testproject.Classes
                         case Constants.chatCmdHelp:
                         case Constants.chatCmdBcBlack:
                         case Constants.chatCmdBcWhite:
+                        case Constants.chatCmdClear:
+                        case Constants.chatCmdCls:
                             WorkChatCommand(message);
                             break;
                         default:
@@ -340,6 +343,11 @@ namespace TCP_Testproject.Classes
                 case Constants.chatCmdBcWhite:
                     Console.BackgroundColor = ConsoleColor.White;
                     Console.ForegroundColor = ConsoleColor.Black;
+                    break;
+                case Constants.chatCmdClear:
+                case Constants.chatCmdCls:
+                    chatObjects.messageData.Clear();
+                    Console.Clear();
                     break;
             }
         }
