@@ -48,7 +48,9 @@ namespace TCP_Testproject.Classes
 
             // Start listening for client requests.
             chatObjects.server.Start();
-            
+
+            ThreadPool.QueueUserWorkItem(ServerConsoleInput, 1);
+
             ServerHandleClients();
         }
 
@@ -67,7 +69,7 @@ namespace TCP_Testproject.Classes
 
                     ThreadPool.QueueUserWorkItem(ServerListenSend, client);
 
-                    Console.WriteLine("Connected!");
+                    Console.WriteLine("Connection accepted ip=\"{0}\"", ((IPEndPoint)client.Client.RemoteEndPoint).Address.ToString());
                 }
             }
             catch (SocketException e)
@@ -108,11 +110,14 @@ namespace TCP_Testproject.Classes
                 {
                     //blocks until a client sends a message
                     bytesRead = clientStream.Read(message, 0, 4096);
-                    Console.WriteLine("Received: {0}", encoder.GetString(message, 0, bytesRead));
+                    Console.WriteLine("Received from ip=\"{0}\" string=\"{1}\"", 
+                                      ((IPEndPoint)tcpClient.Client.RemoteEndPoint).Address.ToString(),
+                                      encoder.GetString(message, 0, bytesRead));
                 }
                 catch
                 {
                     //a socket error has occured
+                    Console.WriteLine("Connection disconnect ip=\"{0}\"", ((IPEndPoint)tcpClient.Client.RemoteEndPoint).Address.ToString());
                     break;
                 }
 
@@ -134,7 +139,7 @@ namespace TCP_Testproject.Classes
                         NetworkStream broadcastStream = broadcastMember.GetStream();
 
                         broadcastStream.Write(buffer, 0, buffer.Length);
-                        Console.WriteLine("Sent to {0}: {1}", 
+                        Console.WriteLine("Sent to ip=\"{0}\" string=\"{1}\"", 
                                           ((IPEndPoint)broadcastMember.Client.RemoteEndPoint).Address.ToString(), 
                                           bufferincmessage);
                     }
@@ -145,6 +150,42 @@ namespace TCP_Testproject.Classes
             clientStream.Close();
             chatObjects.clientList.Remove(tcpClient);
             tcpClient.Close();
+        }
+
+        // Input function for console; do not use fakeinput
+        private static void ServerConsoleInput(object fakeinput)
+        {
+            ASCIIEncoding encoder = new ASCIIEncoding();
+
+            while (true)
+            {
+                string _userInput = String.Empty;
+
+                _userInput = Console.ReadLine();
+
+                switch (_userInput)
+                {
+                    case Constants.chatCmdHelp:
+                    case Constants.chatCmdBcBlack:
+                    case Constants.chatCmdBcWhite:
+                        WorkChatCommand(_userInput);
+                        Console.Clear();
+                        break;
+                    default:
+                        byte[] buffer = encoder.GetBytes(Constants.delimUsername + "<Server>" + Constants.delimMsgData + _userInput);
+
+                        foreach (TcpClient broadcastMember in chatObjects.clientList)
+                        {
+                            NetworkStream broadcastStream = broadcastMember.GetStream();
+
+                            broadcastStream.Write(buffer, 0, buffer.Length);
+                            Console.WriteLine("Sent to ip=\"{0}\" string=\"{1}\"",
+                                              ((IPEndPoint)broadcastMember.Client.RemoteEndPoint).Address.ToString(),
+                                              encoder.GetString(buffer));
+                        }
+                        break;
+                }
+            }
         }
 
         private static void ClientCreate()
