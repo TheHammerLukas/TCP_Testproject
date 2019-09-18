@@ -203,15 +203,24 @@ namespace TCP_Testproject.Classes
                 {
                     string message = Console.ReadLine();
 
-                    // Translate the passed message into ASCII and store it as a Byte array.
-                    Byte[] data = System.Text.Encoding.ASCII.GetBytes(Constants.delimUsername + chatObjects.clientName + 
-                                                                      Constants.delimMsgData + message);
+                    switch (message)
+                    {
+                        case Constants.chatCmdHelp:
+                        case Constants.chatCmdBcBlack:
+                        case Constants.chatCmdBcWhite:
+                            WorkChatCommand(message);
+                            break;
+                        default:
+                            // Translate the passed message into ASCII and store it as a Byte array.
+                            Byte[] data = System.Text.Encoding.ASCII.GetBytes(Constants.delimUsername + chatObjects.clientName +
+                                                                              Constants.delimMsgData + message);
 
-                    // Send the message to the connected TcpServer. 
-                    stream.Write(data, 0, data.Length);
+                            // Send the message to the connected TcpServer. 
+                            stream.Write(data, 0, data.Length);
 
-                    chatObjects.messageData.Add(new Message(chatObjects.clientName, message, Constants.alignmentRight));
-
+                            chatObjects.messageData.Add(new Message(chatObjects.clientName, message, Constants.alignmentRight));
+                            break;
+                    }
                     // Print the screen
                     Output.PrintScreen();
                 }
@@ -273,6 +282,24 @@ namespace TCP_Testproject.Classes
                 {
                     
                 }
+            }
+        }
+
+        private static void WorkChatCommand(string chatCommand)
+        {
+            switch (chatCommand)
+            {
+                case Constants.chatCmdHelp:
+                    Output.PrintHelp();
+                    break;
+                case Constants.chatCmdBcBlack:
+                    Console.BackgroundColor = ConsoleColor.Black;
+                    Console.ForegroundColor = ConsoleColor.Gray;
+                    break;
+                case Constants.chatCmdBcWhite:
+                    Console.BackgroundColor = ConsoleColor.White;
+                    Console.ForegroundColor = ConsoleColor.Black;
+                    break;
             }
         }
     }

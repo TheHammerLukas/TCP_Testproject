@@ -34,6 +34,18 @@ namespace TCP_Testproject.Classes
             }
         }
 
+        static public void PrintHelp()
+        {
+            PrintHeader();
+
+            PrintString("Help Menu:", Constants.alignmentCenter);
+            PrintString("/bcblack = change to dark theme", Constants.alignmentLeft);
+            PrintString("/bcwhite = change to white theme", Constants.alignmentLeft);
+            PrintString("Press any key to return to chat!", Constants.alignmentCenter);
+
+            Console.ReadKey();
+        }
+
         static private void PrintHeader()
         {
             Console.Clear();

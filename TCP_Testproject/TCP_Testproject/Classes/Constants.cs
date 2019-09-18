@@ -8,6 +8,11 @@ namespace TCP_Testproject.Classes
 {
     class Constants
     {
+        // Chat command constants
+        public const string chatCmdHelp = "/help";
+        public const string chatCmdBcBlack = "/bcblack";
+        public const string chatCmdBcWhite = "/bcwhite";
+
         // Text alignment constants
         public const string alignmentLeft = "alignLeft";
         public const string alignmentCenter = "alignCenter";
