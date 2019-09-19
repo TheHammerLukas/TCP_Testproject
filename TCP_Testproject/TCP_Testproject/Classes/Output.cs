@@ -131,6 +131,7 @@ namespace TCP_Testproject.Classes
             string _textAlignment = "";
             int _cntMessagesToHide = 0;
 
+            // THis for loop is so that the console does not autoscroll;
             for (int i = Logic.chatObjects.messageData.Count; i >= Logic.chatObjects.messageData.Count - Console.WindowHeight + 6; i--)
             {
                 try
