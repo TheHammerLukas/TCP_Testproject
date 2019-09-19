@@ -129,9 +129,42 @@ namespace TCP_Testproject.Classes
         {
             string _outputString = "";
             string _textAlignment = "";
+            int _cntMessagesToHide = 0;
 
-            for (int i = Logic.chatObjects.messageData.Count - Console.WindowHeight + 6 < 0 ?
-                 0 : Logic.chatObjects.messageData.Count - Console.WindowHeight + 6;
+            for (int i = Logic.chatObjects.messageData.Count; i >= Logic.chatObjects.messageData.Count - Console.WindowHeight + 6; i--)
+            {
+                try
+                {
+                    if (Logic.chatObjects.messageData[i].username.Length + 2 + Logic.chatObjects.messageData[i].message.Length <= Console.WindowWidth)
+                    {
+                        // nothing happens => check next message;
+                    }
+                    else if (Logic.chatObjects.messageData[i].username.Length + 2 + Logic.chatObjects.messageData[i].message.Length <= Console.WindowWidth * 2)
+                    {
+                        _cntMessagesToHide += 2;
+                    }
+                    else if (Logic.chatObjects.messageData[i].username.Length + 2 + Logic.chatObjects.messageData[i].message.Length > Console.WindowWidth)
+                    {
+                        _cntMessagesToHide += 2;
+                    }
+                    else
+                    {
+                        // nothing happens => check next message;
+                    }
+
+                    if (Logic.chatObjects.messageData.Count - Console.WindowHeight + (6 + _cntMessagesToHide) > Logic.chatObjects.messageData.Count)
+                    {
+                        _cntMessagesToHide = 0;
+                    }
+                }
+                catch
+                {
+                    // nothing happens
+                }
+            }
+
+            for (int i = Logic.chatObjects.messageData.Count - Console.WindowHeight + (6 + _cntMessagesToHide) < 0 ?
+                 0 : Logic.chatObjects.messageData.Count - Console.WindowHeight + (6 + _cntMessagesToHide);
                  i < Logic.chatObjects.messageData.Count;
                  i++)
             {
