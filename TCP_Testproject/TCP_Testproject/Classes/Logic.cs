@@ -173,7 +173,7 @@ namespace TCP_Testproject.Classes
                         WorkChatCommand(_userInput);
                         break;
                     default:
-                        byte[] buffer = encoder.GetBytes(Constants.delimUsername + "<Server>" + Constants.delimMsgData + _userInput);
+                        byte[] buffer = encoder.GetBytes(Constants.delimUsername + Constants.serverUsername + Constants.delimMsgData + _userInput);
 
                         foreach (TcpClient broadcastMember in chatObjects.clientList)
                         {
@@ -193,6 +193,7 @@ namespace TCP_Testproject.Classes
         {
             string _desiredUsername = String.Empty;
 
+            // Only accept the users desired username if it doesn't immitate the server username
             do
             {
                 _desiredUsername = String.Empty;
@@ -327,7 +328,7 @@ namespace TCP_Testproject.Classes
                     message = dataString.Substring(startPosMessage);
 
                     // Handle commands received from server
-                    if (username == "<Server>" && (message == Constants.chatCmdClearAll || message == Constants.chatCmdClsAll))
+                    if (username == Constants.serverUsername && (message == Constants.chatCmdClearAll || message == Constants.chatCmdClsAll))
                     {
                         WorkChatCommand(message);
                     }
