@@ -191,8 +191,17 @@ namespace TCP_Testproject.Classes
 
         private static void ClientCreate()
         {
-            Output.PrintScreen();
-            chatObjects.clientName = Console.ReadLine();
+            string _desiredUsername = String.Empty;
+
+            do
+            {
+                _desiredUsername = String.Empty;
+
+                Output.PrintScreen();
+                _desiredUsername = Console.ReadLine();
+            } while (_desiredUsername == Constants.serverUsername);
+
+            chatObjects.clientName = _desiredUsername;
 
             // Create a TcpClient.
             // Note, for this client to work you need to have a TcpServer 
@@ -317,7 +326,15 @@ namespace TCP_Testproject.Classes
                     username = dataString.Substring(startPosUsername, startPosMessage - Constants.delimMsgData.Length - startPosUsername);
                     message = dataString.Substring(startPosMessage);
 
-                    chatObjects.messageData.Add(new Message(username, message, Constants.alignmentLeft));
+                    // Handle commands received from server
+                    if (username == "<Server>" && (message == Constants.chatCmdClearAll || message == Constants.chatCmdClsAll))
+                    {
+                        WorkChatCommand(message);
+                    }
+                    else
+                    {
+                        chatObjects.messageData.Add(new Message(username, message, Constants.alignmentLeft));
+                    }
 
                     // Print the screen
                     Output.PrintScreen();
@@ -346,6 +363,11 @@ namespace TCP_Testproject.Classes
                     break;
                 case Constants.chatCmdClear:
                 case Constants.chatCmdCls:
+                    chatObjects.messageData.Clear();
+                    Console.Clear();
+                    break;
+                case Constants.chatCmdClearAll:
+                case Constants.chatCmdClsAll:
                     chatObjects.messageData.Clear();
                     Console.Clear();
                     break;

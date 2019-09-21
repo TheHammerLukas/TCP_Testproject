@@ -14,6 +14,8 @@ namespace TCP_Testproject.Classes
         public const string chatCmdBcWhite = "/bcwhite";
         public const string chatCmdClear = "/clear";
         public const string chatCmdCls = "/cls";
+        public const string chatCmdClearAll = "/clearall";
+        public const string chatCmdClsAll = "/clsall";
 
         // Text alignment constants
         public const string alignmentLeft = "alignLeft";
@@ -35,5 +37,8 @@ namespace TCP_Testproject.Classes
         // Delimiter constants
         public const string delimUsername = ":#USERNAME:";
         public const string delimMsgData = ":#MSGDATA:";
+
+        // Special constants
+        public const string serverUsername = "<Server>";
     }
 }
