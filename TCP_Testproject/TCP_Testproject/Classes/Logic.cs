@@ -213,7 +213,7 @@ namespace TCP_Testproject.Classes
             
             // Home: 192.168.178.34
             // Work: 10.110.113.233
-            string ipAddress = "192.168.41.12";
+            string ipAddress = "127.0.0.1";
 
             Output.PrintScreen();
             ipAddress = Console.ReadLine();
