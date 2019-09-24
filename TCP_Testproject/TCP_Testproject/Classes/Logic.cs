@@ -28,7 +28,6 @@ namespace TCP_Testproject.Classes
             }
             else if (_input == "C")
             {
-                chatState = Constants.ProgramState.connecting;
                 ClientCreate();
             }
 
@@ -39,9 +38,7 @@ namespace TCP_Testproject.Classes
         {
             Int32 port = 13000;
 
-            // Home: 192.168.178.34
-            // Work: 10.110.113.233
-
+            // we want to listen for connections from any IPv4 adress
             IPAddress ipAddress = IPAddress.Any;
 
             chatObjects.server = new TcpListener(ipAddress, port);
@@ -200,9 +197,13 @@ namespace TCP_Testproject.Classes
 
                 Output.PrintScreen();
                 _desiredUsername = Console.ReadLine();
-            } while (_desiredUsername == Constants.serverUsername);
+            } while (_desiredUsername == Constants.serverUsername || _desiredUsername == Constants.delimUsername ||
+                     _desiredUsername == Constants.delimMsgData);
 
             chatObjects.clientName = _desiredUsername;
+
+            // Handle input of user for server IPv4 address
+            chatState = Constants.ProgramState.connecting;
 
             // Create a TcpClient.
             // Note, for this client to work you need to have a TcpServer 
@@ -212,7 +213,10 @@ namespace TCP_Testproject.Classes
             
             // Home: 192.168.178.34
             // Work: 10.110.113.233
-            string ipAddress = "192.168.178.34";
+            string ipAddress = "192.168.41.12";
+
+            Output.PrintScreen();
+            ipAddress = Console.ReadLine();
 
             do
             {

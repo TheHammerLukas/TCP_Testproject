@@ -14,11 +14,11 @@ namespace TCP_Testproject.Classes
             }
             else if (Logic.chatState == Constants.ProgramState.initialized)
             {
-
+                PrintClientCreate();
             }
             else if (Logic.chatState == Constants.ProgramState.connecting)
             {
-                PrintClientCreate();
+                PrintClientSelectServer();
             }
             else if (Logic.chatState == Constants.ProgramState.connected)
             {
@@ -114,6 +114,12 @@ namespace TCP_Testproject.Classes
         {
             PrintString("Enter your desired username:", Constants.alignmentCenter);
         }
+
+        static private void PrintClientSelectServer()
+        {
+            PrintString("Enter the IPv4 address of the server:", Constants.alignmentCenter);
+        }
+
 
         static private void PrintClientConnectSuccess()
         {
