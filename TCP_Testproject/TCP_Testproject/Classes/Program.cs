@@ -49,7 +49,7 @@ namespace TCP_Testproject.Classes
 
         internal static extern bool SetConsoleMode(IntPtr hConsoleHandle, uint mode);
 
-        // Check for when chat is minimized
+        // Check if program has focus
         public static bool ProgramHasFocus()
         {
             if (GetForegroundWindow() == Process.GetCurrentProcess().MainWindowHandle)
