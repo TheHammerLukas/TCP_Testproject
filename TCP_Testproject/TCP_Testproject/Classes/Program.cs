@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace TCP_Testproject.Classes
@@ -67,7 +68,7 @@ namespace TCP_Testproject.Classes
         // Taskbar icon flash funcionality
         public static void StartFlashTaskbarIcon()
         {
-            StartFlash(Process.GetCurrentProcess().MainWindowHandle);
+            new Thread(() => StartFlash(Process.GetCurrentProcess().MainWindowHandle)).Start();
         }
 
         public static void StopFlashTaskbarIcon()
