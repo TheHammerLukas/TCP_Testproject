@@ -341,6 +341,12 @@ namespace TCP_Testproject.Classes
                         chatObjects.messageData.Add(new Message(username, message, Constants.alignmentLeft));
                     }
 
+                    // Let the program flash
+                    if (!Program.ProgramHasFocus())
+                    {
+                        Program.StartFlashTaskbarIcon();
+                    }
+
                     // Print the screen
                     Output.PrintScreen();
                 }
