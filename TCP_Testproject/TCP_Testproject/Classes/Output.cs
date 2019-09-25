@@ -105,6 +105,16 @@ namespace TCP_Testproject.Classes
             Console.WriteLine("///");
         }
 
+        static private void PrintFooter()
+        {
+            for (int i = 0; i < Console.WindowWidth - 1; i++)
+            {
+                Console.Write("-");
+            }
+            Console.WriteLine();
+            PrintString("Type your message and press enter to send:", Constants.alignmentLeft);
+        }
+
         static private void PrintInitInterface()
         {
             PrintString("Host server | Connect as client [H|C]", Constants.alignmentCenter);
@@ -142,15 +152,15 @@ namespace TCP_Testproject.Classes
             {
                 try
                 {
-                    if (Logic.chatObjects.messageData[i].username.Length + 2 + Logic.chatObjects.messageData[i].message.Length <= Console.WindowWidth)
+                    if (Logic.chatObjects.messageData[i].username.Length + 2 + Logic.chatObjects.messageData[i].message.Length <= Console.WindowWidth - 1)
                     {
                         // nothing happens => check next message;
                     }
-                    else if (Logic.chatObjects.messageData[i].username.Length + 2 + Logic.chatObjects.messageData[i].message.Length <= Console.WindowWidth * 2)
+                    else if (Logic.chatObjects.messageData[i].username.Length + 2 + Logic.chatObjects.messageData[i].message.Length <= (Console.WindowWidth - 1) * 2)
                     {
-                        _cntMessagesToHide += 2;
+                        _cntMessagesToHide += 1;
                     }
-                    else if (Logic.chatObjects.messageData[i].username.Length + 2 + Logic.chatObjects.messageData[i].message.Length > Console.WindowWidth)
+                    else if (Logic.chatObjects.messageData[i].username.Length + 2 + Logic.chatObjects.messageData[i].message.Length > Console.WindowWidth - 1)
                     {
                         _cntMessagesToHide += 2;
                     }
@@ -185,11 +195,7 @@ namespace TCP_Testproject.Classes
                 }
                 PrintString(_outputString, _textAlignment);
             }
-            for (int i = 0; i < Console.WindowWidth; i++)
-            {
-                Console.Write("-");
-            }
-            PrintString("Type your message and press enter to send:", Constants.alignmentLeft);
+            PrintFooter();
         }
 
         static private void PrintString(string outputString, string textAlignment)
