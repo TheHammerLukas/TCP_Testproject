@@ -14,6 +14,8 @@ namespace TCP_Testproject.Classes
 
         // Name constants
         public const string serverUsername = "<Server>";
+        public const string InstanceClient = "ClientInstance";
+        public const string InstanceServer = "ServerInstance";
 
         // Program state constants
         public enum ProgramState

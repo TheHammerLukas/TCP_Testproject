@@ -160,13 +160,9 @@ namespace TCP_Testproject.Classes
 
                 _userInput = Console.ReadLine();
 
-                switch (_userInput)
+                switch (DetermineIsCommand(_userInput, Constants.InstanceServer))
                 {
-                    case Constants.chatCmdHelp:
-                    case Constants.chatCmdBcBlack:
-                    case Constants.chatCmdBcWhite:
-                    case Constants.chatCmdClear:
-                    case Constants.chatCmdCls:
+                    case true:
                         WorkChatCommand(_userInput);
                         break;
                     default:
@@ -259,13 +255,9 @@ namespace TCP_Testproject.Classes
                 {
                     string message = Console.ReadLine();
 
-                    switch (message)
+                    switch (DetermineIsCommand(message, Constants.InstanceClient))
                     {
-                        case Constants.chatCmdHelp:
-                        case Constants.chatCmdBcBlack:
-                        case Constants.chatCmdBcWhite:
-                        case Constants.chatCmdClear:
-                        case Constants.chatCmdCls:
+                        case true:
                             WorkChatCommand(message);
                             break;
                         default:
@@ -332,7 +324,7 @@ namespace TCP_Testproject.Classes
                     message = dataString.Substring(startPosMessage);
 
                     // Handle commands received from server
-                    if (username == Constants.serverUsername && (message == Constants.chatCmdClearAll || message == Constants.chatCmdClsAll))
+                    if (username == Constants.serverUsername && (message.IndexOf(Constants.chatCmdClearAll) == 0 || message.IndexOf(Constants.chatCmdClsAll) == 0))
                     {
                         WorkChatCommand(message);
                     }
@@ -357,31 +349,65 @@ namespace TCP_Testproject.Classes
             }
         }
 
+        private static bool DetermineIsCommand(string message, string currInstance)
+        {
+            if (message.IndexOf(Constants.chatCmdHelp) == 0     || message.IndexOf(Constants.chatCmdCommandHelp) == 0   ||
+                message.IndexOf(Constants.chatCmdBcBlack) == 0  || message.IndexOf(Constants.chatCmdBcWhite) == 0       ||
+                message.IndexOf(Constants.chatCmdClear) == 0    || message.IndexOf(Constants.chatCmdCls) == 0           ||
+                currInstance == Constants.InstanceServer && 
+                (message.IndexOf(Constants.chatCmdClearAll) == 0 || message.IndexOf(Constants.chatCmdClsAll) == 0)      ||
+                message.IndexOf(Constants.chatCmdNotificationBase) == 0) 
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        
+
         private static void WorkChatCommand(string chatCommand)
         {
-            switch (chatCommand)
+            if (chatCommand.IndexOf(Constants.chatCmdHelp) == 0 )
             {
-                case Constants.chatCmdHelp:
-                    Output.PrintHelp();
-                    break;
-                case Constants.chatCmdBcBlack:
-                    Console.BackgroundColor = ConsoleColor.Black;
-                    Console.ForegroundColor = ConsoleColor.Gray;
-                    break;
-                case Constants.chatCmdBcWhite:
-                    Console.BackgroundColor = ConsoleColor.White;
-                    Console.ForegroundColor = ConsoleColor.Black;
-                    break;
-                case Constants.chatCmdClear:
-                case Constants.chatCmdCls:
-                    chatObjects.messageData.Clear();
-                    Console.Clear();
-                    break;
-                case Constants.chatCmdClearAll:
-                case Constants.chatCmdClsAll:
-                    chatObjects.messageData.Clear();
-                    Console.Clear();
-                    break;
+                Output.PrintHelp();
+            }
+            else if (chatCommand.IndexOf(Constants.chatCmdCommandHelp) == 0)
+            {
+
+            }
+            else if (chatCommand.IndexOf(Constants.chatCmdBcBlack) == 0)
+            {
+                Console.BackgroundColor = ConsoleColor.Black;
+                Console.ForegroundColor = ConsoleColor.Gray;
+            }
+            else if (chatCommand.IndexOf(Constants.chatCmdBcWhite) == 0)
+            {
+                Console.BackgroundColor = ConsoleColor.White;
+                Console.ForegroundColor = ConsoleColor.Black;
+            }
+            else if (chatCommand.IndexOf(Constants.chatCmdClear) == 0       || 
+                     chatCommand.IndexOf(Constants.chatCmdCls) == 0         ||
+                     chatCommand.IndexOf(Constants.chatCmdClearAll) == 0    ||
+                     chatCommand.IndexOf(Constants.chatCmdClsAll) == 0)
+            { 
+                chatObjects.messageData.Clear();
+                Console.Clear();
+            }
+            else if (chatCommand.IndexOf(Constants.chatCmdNotificationBase) == 0)
+            {
+                if ()
+                {
+
+                }
+                else
+                {
+                    string notificationConfig = "Notification sound = ", 
+
+                    chatObjects.messageData.Add(new Message(chatObjects.clientName, notificationConfig,))
+                }
+
             }
         }
     }
