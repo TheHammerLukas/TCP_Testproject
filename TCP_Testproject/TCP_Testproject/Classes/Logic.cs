@@ -334,7 +334,7 @@ namespace TCP_Testproject.Classes
                     }
 
                     // Let the program flash
-                    if (!Program.ProgramHasFocus())
+                    if (!Program.ProgramHasFocus() && Properties.Settings.Default.doNotifyVisual)
                     {
                         Program.StartFlashTaskbarIcon();
                     }
@@ -351,12 +351,12 @@ namespace TCP_Testproject.Classes
 
         private static bool DetermineIsCommand(string message, string currInstance)
         {
-            if (message.IndexOf(Constants.chatCmdHelp) == 0     || message.IndexOf(Constants.chatCmdCommandHelp) == 0   ||
-                message.IndexOf(Constants.chatCmdBcBlack) == 0  || message.IndexOf(Constants.chatCmdBcWhite) == 0       ||
-                message.IndexOf(Constants.chatCmdClear) == 0    || message.IndexOf(Constants.chatCmdCls) == 0           ||
+            if (message.StartsWith(Constants.chatCmdHelp) || 
+                message.StartsWith(Constants.chatCmdBcBlack) || message.StartsWith(Constants.chatCmdBcWhite) ||
+                message.StartsWith(Constants.chatCmdClear) || message.StartsWith(Constants.chatCmdCls) ||
                 currInstance == Constants.InstanceServer && 
-                (message.IndexOf(Constants.chatCmdClearAll) == 0 || message.IndexOf(Constants.chatCmdClsAll) == 0)      ||
-                message.IndexOf(Constants.chatCmdNotificationBase) == 0) 
+                (message.StartsWith(Constants.chatCmdClearAll) || message.StartsWith(Constants.chatCmdClsAll)) ||
+                message.StartsWith(Constants.chatCmdNotificationBase)) 
             {
                 return true;
             }
@@ -366,48 +366,59 @@ namespace TCP_Testproject.Classes
             }
         }
         
-
         private static void WorkChatCommand(string chatCommand)
         {
-            if (chatCommand.IndexOf(Constants.chatCmdHelp) == 0 )
+            if (chatCommand.StartsWith(Constants.chatCmdHelp))
             {
                 Output.PrintHelp();
             }
-            else if (chatCommand.IndexOf(Constants.chatCmdCommandHelp) == 0)
+            else if (chatCommand.Contains(Constants.chatCmdCommandHelp))
             {
-
+                Output.PrintCommandHelp(chatCommand);
             }
-            else if (chatCommand.IndexOf(Constants.chatCmdBcBlack) == 0)
+            else if (chatCommand.StartsWith(Constants.chatCmdBcBlack))
             {
                 Console.BackgroundColor = ConsoleColor.Black;
                 Console.ForegroundColor = ConsoleColor.Gray;
             }
-            else if (chatCommand.IndexOf(Constants.chatCmdBcWhite) == 0)
+            else if (chatCommand.StartsWith(Constants.chatCmdBcWhite))
             {
                 Console.BackgroundColor = ConsoleColor.White;
                 Console.ForegroundColor = ConsoleColor.Black;
             }
-            else if (chatCommand.IndexOf(Constants.chatCmdClear) == 0       || 
-                     chatCommand.IndexOf(Constants.chatCmdCls) == 0         ||
-                     chatCommand.IndexOf(Constants.chatCmdClearAll) == 0    ||
-                     chatCommand.IndexOf(Constants.chatCmdClsAll) == 0)
+            else if (chatCommand.StartsWith(Constants.chatCmdClear) || 
+                     chatCommand.StartsWith(Constants.chatCmdCls) ||
+                     chatCommand.StartsWith(Constants.chatCmdClearAll) ||
+                     chatCommand.StartsWith(Constants.chatCmdClsAll))
             { 
                 chatObjects.messageData.Clear();
                 Console.Clear();
             }
-            else if (chatCommand.IndexOf(Constants.chatCmdNotificationBase) == 0)
+            else if (chatCommand.StartsWith(Constants.chatCmdNotificationBase))
             {
-                if ()
+                bool _showConfig = true;
+
+                if (chatCommand.Contains(Constants.chatCmdNotificationSound))
                 {
-
+                    Properties.Settings.Default.doNotifySound = Properties.Settings.Default.doNotifySound == true ? false : true;
+                    _showConfig = false;
                 }
-                else
+                if (chatCommand.Contains(Constants.chatCmdNotificationVisual))
                 {
-                    string notificationConfig = "Notification sound = ", 
-
-                    chatObjects.messageData.Add(new Message(chatObjects.clientName, notificationConfig,))
+                    Properties.Settings.Default.doNotifyVisual = Properties.Settings.Default.doNotifyVisual == true ? false : true;
+                    _showConfig = false;
                 }
+                Properties.Settings.Default.Save();
 
+                if (_showConfig)
+                {
+                    string notificationConfig = "Notification: sound = " +
+                                                (Properties.Settings.Default.doNotifySound == true ? "enabled; " : "disabled; ") +
+                                                "visual = " +
+                                                (Properties.Settings.Default.doNotifyVisual == true ? "enabled;" : "disabled;");
+
+                    chatObjects.messageData.Add(new Message(chatObjects.clientName, notificationConfig, Constants.alignmentCenter));
+                }
             }
         }
     }

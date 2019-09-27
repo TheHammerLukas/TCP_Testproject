@@ -2,10 +2,10 @@
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="TCP_Testproject.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
-    <Setting Name="doNotifySound" Type="System.Boolean" Scope="Application">
+    <Setting Name="doNotifySound" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
-    <Setting Name="doNotifyVisual" Type="System.Boolean" Scope="Application">
+    <Setting Name="doNotifyVisual" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
   </Settings>

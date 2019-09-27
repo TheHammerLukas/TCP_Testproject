@@ -23,21 +23,27 @@ namespace TCP_Testproject.Properties {
             }
         }
         
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("True")]
         public bool doNotifySound {
             get {
                 return ((bool)(this["doNotifySound"]));
             }
+            set {
+                this["doNotifySound"] = value;
+            }
         }
         
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("True")]
         public bool doNotifyVisual {
             get {
                 return ((bool)(this["doNotifyVisual"]));
+            }
+            set {
+                this["doNotifyVisual"] = value;
             }
         }
     }

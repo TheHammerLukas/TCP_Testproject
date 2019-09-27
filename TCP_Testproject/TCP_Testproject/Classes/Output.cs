@@ -42,6 +42,45 @@ namespace TCP_Testproject.Classes
             PrintString("/bcblack = change to dark theme", Constants.alignmentLeft);
             PrintString("/bcwhite = change to white theme", Constants.alignmentLeft);
             PrintString("/clear or /cls = clear screen", Constants.alignmentLeft);
+            PrintString("/notification = manage notification settings", Constants.alignmentLeft);
+            PrintString("Press any key to return to chat!", Constants.alignmentCenter);
+
+            Console.ReadKey();
+        }
+
+        static public void PrintCommandHelp(string chatCommand)
+        {
+            PrintHeader();
+
+            PrintString("Help Menu for specific commands:", Constants.alignmentCenter);
+
+            if (chatCommand.StartsWith(Constants.chatCmdBcBlack))
+            {
+                PrintString("/bcblack is used to switch to the dark theme", Constants.alignmentLeft);    
+            }
+            else if (chatCommand.StartsWith(Constants.chatCmdBcWhite))
+            {
+                PrintString("/bcwhite is used to switch to the light theme", Constants.alignmentLeft);
+            }
+            else if (chatCommand.StartsWith(Constants.chatCmdClear) || chatCommand.StartsWith(Constants.chatCmdCls))
+            {
+                PrintString("/clear or /cls deletes all previous messages and clears the chat for the invoking user", Constants.alignmentLeft);
+            }
+            else if (chatCommand.StartsWith(Constants.chatCmdClearAll) || chatCommand.StartsWith(Constants.chatCmdClsAll))
+            {
+                PrintString("/clear or /cls deletes all previous messages and clears the chat for all clients + the server", Constants.alignmentLeft);
+                PrintString("this command can only be invoked by the server and not by a client", Constants.alignmentLeft);
+            }
+            else if (chatCommand.StartsWith(Constants.chatCmdNotificationBase))
+            {
+                PrintString("/notification is used to display the current notification settings", Constants.alignmentLeft);
+                PrintString("-s is used to toggle the sound notification 'on' or 'off'", Constants.alignmentLeft);
+                PrintString("-v is used to toggle the visual notification 'on' or 'off'", Constants.alignmentLeft);
+            }
+            else
+            {
+                PrintString("No help exists for the specified command!", Constants.alignmentLeft);
+            }
             PrintString("Press any key to return to chat!", Constants.alignmentCenter);
 
             Console.ReadKey();
