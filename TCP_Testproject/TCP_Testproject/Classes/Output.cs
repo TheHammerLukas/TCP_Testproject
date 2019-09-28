@@ -152,6 +152,7 @@ namespace TCP_Testproject.Classes
             }
             Console.WriteLine();
             PrintString("Type your message and press enter to send:", Constants.alignmentLeft);
+            PrintString(Logic.enteredMessage, Constants.alignmentLeft);
         }
 
         static private void PrintInitInterface()
@@ -168,7 +169,6 @@ namespace TCP_Testproject.Classes
         {
             PrintString("Enter the IPv4 address of the server:", Constants.alignmentCenter);
         }
-
 
         static private void PrintClientConnectSuccess()
         {

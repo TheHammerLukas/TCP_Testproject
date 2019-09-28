@@ -13,6 +13,7 @@ namespace TCP_Testproject.Classes
         public static Objects chatObjects = new Objects();
         public static Constants.ProgramState chatState = Constants.ProgramState.initializing;
         public static int scrollOffset = 0;
+        public static string enteredMessage = String.Empty;
 
         public static void InitClientServer()
         {
@@ -278,17 +279,25 @@ namespace TCP_Testproject.Classes
                             scrollOffset--;
                             _refreshScreen = true;
                         }
+                        else if (_pressedKey.Key == ConsoleKey.Backspace && _message.Length > 0)
+                        {
+                            _message = _message.Remove(_message.Length - 1);
+                            _refreshScreen = true;
+                        }
                         else if (_pressedKey.Key != ConsoleKey.Enter)
                         {
                             _message += _pressedKey.KeyChar;
-                            //_refreshScreen = true;
+                            _refreshScreen = true;
                         }
 
                         if (_refreshScreen)
                         {
+                            enteredMessage = _message;
                             Output.PrintScreen();
                         }
                     } while (_pressedKey.Key != ConsoleKey.Enter);
+
+                    enteredMessage = String.Empty;
 
                     switch (DetermineIsCommand(_message, Constants.InstanceClient))
                     {
