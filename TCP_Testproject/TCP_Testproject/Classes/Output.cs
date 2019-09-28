@@ -186,8 +186,8 @@ namespace TCP_Testproject.Classes
             string _textAlignment = "";
             int _cntMessagesToHide = 0;
 
-            // THis for loop is so that the console does not autoscroll;
-            for (int i = Logic.chatObjects.messageData.Count; i >= Logic.chatObjects.messageData.Count - Console.WindowHeight + 6; i--)
+            // This for loop is so that the console does not autoscroll;
+            for (int i = Logic.chatObjects.messageData.Count - Logic.scrollOffset; i >= Logic.chatObjects.messageData.Count - Console.WindowHeight + 6 - Logic.scrollOffset; i--)
             {
                 try
                 {
@@ -208,7 +208,7 @@ namespace TCP_Testproject.Classes
                         // nothing happens => check next message;
                     }
 
-                    if (Logic.chatObjects.messageData.Count - Console.WindowHeight + (6 + _cntMessagesToHide) > Logic.chatObjects.messageData.Count)
+                    if (Logic.chatObjects.messageData.Count - Console.WindowHeight + (6 + _cntMessagesToHide + Logic.scrollOffset) > Logic.chatObjects.messageData.Count)
                     {
                         _cntMessagesToHide = 0;
                     }
@@ -219,9 +219,9 @@ namespace TCP_Testproject.Classes
                 }
             }
 
-            for (int i = Logic.chatObjects.messageData.Count - Console.WindowHeight + (6 + _cntMessagesToHide) < 0 ?
-                 0 : Logic.chatObjects.messageData.Count - Console.WindowHeight + (6 + _cntMessagesToHide);
-                 i < Logic.chatObjects.messageData.Count;
+            for (int i = Logic.chatObjects.messageData.Count - Console.WindowHeight + (6 + _cntMessagesToHide) - Logic.scrollOffset < 0 ?
+                 0 : Logic.chatObjects.messageData.Count - Console.WindowHeight + (6 + _cntMessagesToHide) - Logic.scrollOffset;
+                 i < Logic.chatObjects.messageData.Count - Logic.scrollOffset;
                  i++)
             {
                 _outputString = Logic.chatObjects.messageData[i].message;

@@ -12,6 +12,7 @@ namespace TCP_Testproject.Classes
     {
         public static Objects chatObjects = new Objects();
         public static Constants.ProgramState chatState = Constants.ProgramState.initializing;
+        public static int scrollOffset = 0;
 
         public static void InitClientServer()
         {
@@ -259,23 +260,51 @@ namespace TCP_Testproject.Classes
             {
                 while (true)
                 {
-                    string message = Console.ReadLine();
+                    ConsoleKeyInfo _pressedKey;
+                    string _message = String.Empty;
 
-                    switch (DetermineIsCommand(message, Constants.InstanceClient))
+                    do
+                    {
+                        bool _refreshScreen = false;
+                        _pressedKey = Console.ReadKey(true);
+
+                        if (_pressedKey.Key == ConsoleKey.PageUp && scrollOffset < chatObjects.messageData.Count - 1)
+                        {
+                            scrollOffset++;
+                            _refreshScreen = true;
+                        }
+                        else if (_pressedKey.Key == ConsoleKey.PageDown && scrollOffset > 0)
+                        {
+                            scrollOffset--;
+                            _refreshScreen = true;
+                        }
+                        else if (_pressedKey.Key != ConsoleKey.Enter)
+                        {
+                            _message += _pressedKey.KeyChar;
+                            //_refreshScreen = true;
+                        }
+
+                        if (_refreshScreen)
+                        {
+                            Output.PrintScreen();
+                        }
+                    } while (_pressedKey.Key != ConsoleKey.Enter);
+
+                    switch (DetermineIsCommand(_message, Constants.InstanceClient))
                     {
                         case true:
-                            WorkChatCommand(message);
+                            WorkChatCommand(_message);
                             break;
                         default:
                             // Translate the passed message into ASCII and store it as a Byte array.
                             Byte[] data = System.Text.Encoding.ASCII.GetBytes(Constants.delimUsername + DateTime.Now.ToString("T", new CultureInfo("de-DE")) + " | " + chatObjects.clientName +
-                                                                              Constants.delimMsgData + message);
+                                                                              Constants.delimMsgData + _message);
 
                             // Send the message to the connected TcpServer. 
                             stream.WriteAsync(data, 0, data.Length);
                             stream.FlushAsync();
 
-                            chatObjects.messageData.Add(new Message("You | " + DateTime.Now.ToString("T", new CultureInfo("de-DE")), message, Constants.alignmentRight));
+                            chatObjects.messageData.Add(new Message("You | " + DateTime.Now.ToString("T", new CultureInfo("de-DE")), _message, Constants.alignmentRight));
                             break;
                     }
                     // Print the screen
