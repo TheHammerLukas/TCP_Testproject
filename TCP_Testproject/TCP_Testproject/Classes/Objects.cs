@@ -14,13 +14,13 @@ namespace TCP_Testproject.Classes
 
     class Message
     {
-        public string username { get; set; }
+        public string additionalInfo { get; set; }
         public string message { get; set; }
         public string alignment { get; set; }
 
-        public Message(string username, string message, string alignment)
+        public Message(string additionalInfo, string message, string alignment)
         {
-            this.username = username;
+            this.additionalInfo = additionalInfo;
             this.message = message;
             this.alignment = alignment;
         }

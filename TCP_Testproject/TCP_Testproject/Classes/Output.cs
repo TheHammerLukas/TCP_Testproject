@@ -191,15 +191,15 @@ namespace TCP_Testproject.Classes
             {
                 try
                 {
-                    if (Logic.chatObjects.messageData[i].username.Length + 2 + Logic.chatObjects.messageData[i].message.Length <= Console.WindowWidth - 1)
+                    if (Logic.chatObjects.messageData[i].additionalInfo.Length + 2 + Logic.chatObjects.messageData[i].message.Length <= Console.WindowWidth - 1)
                     {
                         // nothing happens => check next message;
                     }
-                    else if (Logic.chatObjects.messageData[i].username.Length + 2 + Logic.chatObjects.messageData[i].message.Length <= (Console.WindowWidth - 1) * 2)
+                    else if (Logic.chatObjects.messageData[i].additionalInfo.Length + 2 + Logic.chatObjects.messageData[i].message.Length <= (Console.WindowWidth - 1) * 2)
                     {
                         _cntMessagesToHide += 1;
                     }
-                    else if (Logic.chatObjects.messageData[i].username.Length + 2 + Logic.chatObjects.messageData[i].message.Length > Console.WindowWidth - 1)
+                    else if (Logic.chatObjects.messageData[i].additionalInfo.Length + 2 + Logic.chatObjects.messageData[i].message.Length > Console.WindowWidth - 1)
                     {
                         _cntMessagesToHide += 2;
                     }
@@ -230,7 +230,19 @@ namespace TCP_Testproject.Classes
                 // Only display the username if it is a message that has been received from the server
                 if (_textAlignment == Constants.alignmentLeft)
                 {
-                    _outputString = Logic.chatObjects.messageData[i].username + ": " + _outputString;
+                    _outputString = Logic.chatObjects.messageData[i].additionalInfo + ": " + _outputString;
+                }
+                else if (_textAlignment == Constants.alignmentRight)
+                {
+                    for (int y = 0;
+                         y <= Console.WindowWidth - (2 + Logic.chatObjects.messageData[i].additionalInfo.Length) -
+                                                   (Logic.chatObjects.messageData[i].message.Length % Console.WindowWidth) - 2
+                         && Logic.chatObjects.messageData[i].additionalInfo.Length + 2 + Logic.chatObjects.messageData[i].message.Length > Console.WindowWidth - 1;
+                         y++)
+                    {
+                        _outputString = _outputString + " ";
+                    }
+                    _outputString = _outputString + ": " + Logic.chatObjects.messageData[i].additionalInfo;
                 }
                 PrintString(_outputString, _textAlignment);
             }
@@ -246,7 +258,7 @@ namespace TCP_Testproject.Classes
                     Console.WriteLine(outputString);
                     break;
                 case Constants.alignmentCenter:
-                    Console.SetCursorPosition(((Console.WindowWidth - outputString.Length) / 2) - 1, Console.CursorTop);
+                    Console.SetCursorPosition(((Console.WindowWidth - outputString.Length) / 2), Console.CursorTop);
                     Console.WriteLine(outputString);
                     break;
                 case Constants.alignmentRight:

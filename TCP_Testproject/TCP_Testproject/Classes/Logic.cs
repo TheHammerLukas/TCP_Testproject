@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
@@ -166,13 +167,15 @@ namespace TCP_Testproject.Classes
                         WorkChatCommand(_userInput);
                         break;
                     default:
-                        byte[] buffer = encoder.GetBytes(Constants.delimUsername + Constants.serverUsername + Constants.delimMsgData + _userInput);
+                        byte[] buffer = encoder.GetBytes(Constants.delimUsername + DateTime.Now.ToString("T", new CultureInfo("de-DE")) + " | " + Constants.serverUsername + Constants.delimMsgData + _userInput);
 
                         foreach (TcpClient broadcastMember in chatObjects.clientList)
                         {
                             NetworkStream broadcastStream = broadcastMember.GetStream();
 
-                            broadcastStream.Write(buffer, 0, buffer.Length);
+                            broadcastStream.WriteAsync(buffer, 0, buffer.Length);
+                            broadcastStream.FlushAsync();
+
                             Console.WriteLine("Sent to ip=\"{0}\" string=\"{1}\"",
                                               ((IPEndPoint)broadcastMember.Client.RemoteEndPoint).Address.ToString(),
                                               encoder.GetString(buffer));
@@ -265,13 +268,14 @@ namespace TCP_Testproject.Classes
                             break;
                         default:
                             // Translate the passed message into ASCII and store it as a Byte array.
-                            Byte[] data = System.Text.Encoding.ASCII.GetBytes(Constants.delimUsername + chatObjects.clientName +
+                            Byte[] data = System.Text.Encoding.ASCII.GetBytes(Constants.delimUsername + DateTime.Now.ToString("T", new CultureInfo("de-DE")) + " | " + chatObjects.clientName +
                                                                               Constants.delimMsgData + message);
 
                             // Send the message to the connected TcpServer. 
-                            stream.Write(data, 0, data.Length);
+                            stream.WriteAsync(data, 0, data.Length);
+                            stream.FlushAsync();
 
-                            chatObjects.messageData.Add(new Message(chatObjects.clientName, message, Constants.alignmentRight));
+                            chatObjects.messageData.Add(new Message("You | " + DateTime.Now.ToString("T", new CultureInfo("de-DE")), message, Constants.alignmentRight));
                             break;
                     }
                     // Print the screen
@@ -337,9 +341,16 @@ namespace TCP_Testproject.Classes
                     }
 
                     // Let the program flash
-                    if (!Program.ProgramHasFocus() && Properties.Settings.Default.doNotifyVisual)
+                    if (!Program.ProgramHasFocus())
                     {
-                        Program.StartFlashTaskbarIcon();
+                        if (Properties.Settings.Default.doNotifyVisual)
+                        {
+                            Program.StartFlashTaskbarIcon();
+                        }
+                        if (Properties.Settings.Default.doNotifySound)
+                        {
+                            Console.Beep();
+                        }
                     }
 
                     // Print the screen
