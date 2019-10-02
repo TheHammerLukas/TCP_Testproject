@@ -453,24 +453,24 @@ namespace TCP_Testproject.Classes
             else if (chatCommand.StartsWith(Constants.chatCmdClearAll) ||
                      chatCommand.StartsWith(Constants.chatCmdClsAll))
             {
-                if (currInstance == Constants.InstanceServer)
-                {
-                    UTF8Encoding encoder = new UTF8Encoding();
-                    byte[] buffer = encoder.GetBytes(Constants.delimAddData + Constants.serverUsername + Constants.delimMsgData + "/clsall");
-
-                    foreach (TcpClient broadcastMember in chatObjects.clientList)
-                    {
-                        NetworkStream broadcastStream = broadcastMember.GetStream();
-
-                        broadcastStream.WriteAsync(buffer, 0, buffer.Length);
-                        broadcastStream.FlushAsync();
-                    }
-                }
-                else if (currInstance == Constants.InstanceClient)
-                {
-                    chatObjects.messageData.Clear();
-                }
-                Console.Clear();
+                 if (currInstance == Constants.InstanceServer)
+                 {
+                     UTF8Encoding encoder = new UTF8Encoding();
+                     byte[] buffer = encoder.GetBytes(Constants.delimAddData + Constants.serverUsername + Constants.delimMsgData + "/clsall");
+                 
+                     foreach (TcpClient broadcastMember in chatObjects.clientList)
+                     {
+                         NetworkStream broadcastStream = broadcastMember.GetStream();
+                 
+                         broadcastStream.WriteAsync(buffer, 0, buffer.Length);
+                         broadcastStream.FlushAsync();
+                     }
+                 }
+                 else if (currInstance == Constants.InstanceClient)
+                 {
+                     chatObjects.messageData.Clear();
+                 }
+                 Console.Clear();
             }
             else if (chatCommand.StartsWith(Constants.chatCmdClear) || 
                      chatCommand.StartsWith(Constants.chatCmdCls))
