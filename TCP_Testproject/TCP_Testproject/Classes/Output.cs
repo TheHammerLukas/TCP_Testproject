@@ -166,7 +166,7 @@ namespace TCP_Testproject.Classes
             }
             else if (Console.CursorLeft == 0 && Logic.enteredMessage.Length % Console.WindowWidth >= 119)
             {
-                CursorPosY = Console.CursorTop - (Logic.enteredMessage.Length / Console.WindowWidth) + 1;
+                CursorPosY = Console.CursorTop - ((Logic.enteredMessage.Length / Console.WindowWidth) + 1);
             }
             else
             {
@@ -185,7 +185,7 @@ namespace TCP_Testproject.Classes
             }
             else if (Console.CursorLeft == 0 && Logic.enteredMessage.Length % Console.WindowWidth >= 119)
             {
-                CursorPosY = Console.CursorTop - (Logic.enteredMessage.Length / Console.WindowWidth) + 1;
+                CursorPosY = Console.CursorTop - ((Logic.enteredMessage.Length / Console.WindowWidth) + 1);
             }
             else
             {

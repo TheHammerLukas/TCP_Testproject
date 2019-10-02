@@ -169,7 +169,7 @@ namespace TCP_Testproject.Classes
                         WorkChatCommand(_userInput);
                         break;
                     default:
-                        byte[] buffer = encoder.GetBytes(Constants.delimUsername + GetTimestampString() + " | " + Constants.serverUsername + Constants.delimMsgData + _userInput);
+                        byte[] buffer = encoder.GetBytes(Constants.delimAddData + GetTimestampString() + " | " + Constants.serverUsername + Constants.delimMsgData + _userInput);
 
                         foreach (TcpClient broadcastMember in chatObjects.clientList)
                         {
@@ -198,7 +198,7 @@ namespace TCP_Testproject.Classes
 
                 Output.PrintScreen();
                 _desiredUsername = Console.ReadLine();
-            } while (_desiredUsername == Constants.serverUsername || _desiredUsername == Constants.delimUsername ||
+            } while (_desiredUsername == Constants.serverUsername || _desiredUsername == Constants.delimAddData ||
                      _desiredUsername == Constants.delimMsgData);
 
             chatObjects.clientName = _desiredUsername;
@@ -318,7 +318,7 @@ namespace TCP_Testproject.Classes
                             break;
                         default:
                             // Translate the passed message into ASCII and store it as a Byte array.
-                            Byte[] data = System.Text.Encoding.ASCII.GetBytes(Constants.delimUsername + GetTimestampString() + " | " + chatObjects.clientName +
+                            Byte[] data = System.Text.Encoding.ASCII.GetBytes(Constants.delimAddData + GetTimestampString() + " | " + chatObjects.clientName +
                                                                               Constants.delimMsgData + _message);
 
                             // Send the message to the connected TcpServer. 
@@ -375,7 +375,7 @@ namespace TCP_Testproject.Classes
 
                     // decode the received data
                     dataString = encoder.GetString(receivedData, 0, bytesRead);
-                    startPosUsername = dataString.IndexOf(Constants.delimUsername, 0) + Constants.delimUsername.Length;
+                    startPosUsername = dataString.IndexOf(Constants.delimAddData, 0) + Constants.delimAddData.Length;
                     startPosMessage = dataString.IndexOf(Constants.delimMsgData, 0) + Constants.delimMsgData.Length;
                     username = dataString.Substring(startPosUsername, startPosMessage - Constants.delimMsgData.Length - startPosUsername);
                     message = dataString.Substring(startPosMessage);
