@@ -273,7 +273,7 @@ namespace TCP_Testproject.Classes
                         
                         if (_pressedKey.Key == ConsoleKey.PageUp)
                         {
-                            if (scrollOffset < chatObjects.messageData.Count - 1)
+                            if (chatObjects.messageData.Count - scrollOffset > Console.WindowHeight - 6 && chatObjects.messageData.Count > Console.WindowHeight - 6)
                             {
                                 scrollOffset++;
                             }
@@ -281,7 +281,7 @@ namespace TCP_Testproject.Classes
                         }
                         else if (_pressedKey.Key == ConsoleKey.PageDown)
                         {
-                            if (scrollOffset > 0)
+                            if (scrollOffset > 0 && chatObjects.messageData.Count > Console.WindowHeight - 6)
                             {
                                 scrollOffset--;
                             }
