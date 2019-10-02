@@ -95,7 +95,7 @@ namespace TCP_Testproject.Classes
 
             NetworkStream clientStream = tcpClient.GetStream();
 
-            ASCIIEncoding encoder = new ASCIIEncoding();
+            UTF8Encoding encoder = new UTF8Encoding();
 
             byte[] message = new byte[4096];
             int bytesRead;
@@ -155,7 +155,7 @@ namespace TCP_Testproject.Classes
         // Input function for console; do not use fakeinput
         private static void ServerConsoleInput(object fakeinput)
         {
-            ASCIIEncoding encoder = new ASCIIEncoding();
+            UTF8Encoding encoder = new UTF8Encoding();
 
             while (true)
             {
@@ -317,8 +317,8 @@ namespace TCP_Testproject.Classes
                             WorkChatCommand(_message);
                             break;
                         default:
-                            // Translate the passed message into ASCII and store it as a Byte array.
-                            Byte[] data = System.Text.Encoding.ASCII.GetBytes(Constants.delimAddData + GetTimestampString() + " | " + chatObjects.clientName +
+                            // Translate the passed message into UTF-8 and store it as a Byte array.
+                            Byte[] data = System.Text.Encoding.UTF8.GetBytes(Constants.delimAddData + GetTimestampString() + " | " + chatObjects.clientName +
                                                                               Constants.delimMsgData + _message);
 
                             // Send the message to the connected TcpServer. 
@@ -352,7 +352,7 @@ namespace TCP_Testproject.Classes
         {
             // Get a client stream for reading and writing.
             //  Stream stream = client.GetStream();
-            ASCIIEncoding encoder = new ASCIIEncoding();
+            UTF8Encoding encoder = new UTF8Encoding();
             TcpClient tcpClient = (TcpClient)client;
             NetworkStream clientStream = tcpClient.GetStream();
 
