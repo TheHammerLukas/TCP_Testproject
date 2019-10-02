@@ -285,7 +285,7 @@ namespace TCP_Testproject.Classes
                     {
                         _outputString = _outputString + " ";
                     }
-                    _outputString = _outputString + ": " + Logic.chatObjects.messageData[i].additionalInfo;
+                    _outputString = _outputString + " :" + Logic.chatObjects.messageData[i].additionalInfo;
                 }
                 PrintString(_outputString, _textAlignment);
             }
