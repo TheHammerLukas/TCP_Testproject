@@ -267,30 +267,42 @@ namespace TCP_Testproject.Classes
                     do
                     {
                         bool _refreshScreen = false;
-                        _pressedKey = Console.ReadKey(true);
+                        bool _refreshInput = false;
 
-                        if (_pressedKey.Key == ConsoleKey.PageUp && scrollOffset < chatObjects.messageData.Count - 1)
+                        _pressedKey = Console.ReadKey(true);
+                        
+                        if (_pressedKey.Key == ConsoleKey.PageUp)
                         {
-                            scrollOffset++;
+                            if (scrollOffset < chatObjects.messageData.Count - 1)
+                            {
+                                scrollOffset++;
+                            }
                             _refreshScreen = true;
                         }
-                        else if (_pressedKey.Key == ConsoleKey.PageDown && scrollOffset > 0)
+                        else if (_pressedKey.Key == ConsoleKey.PageDown)
                         {
-                            scrollOffset--;
+                            if (scrollOffset > 0)
+                            {
+                                scrollOffset--;
+                            }
                             _refreshScreen = true;
                         }
                         else if (_pressedKey.Key == ConsoleKey.Backspace && _message.Length > 0)
                         {
                             _message = _message.Remove(_message.Length - 1);
-                            _refreshScreen = true;
+                            _refreshInput = true;
                         }
                         else if (_pressedKey.Key != ConsoleKey.Enter)
                         {
                             _message += _pressedKey.KeyChar;
-                            _refreshScreen = true;
+                            _refreshInput = true;
                         }
 
                         if (_refreshScreen)
+                        {
+                            Output.PrintScreen();
+                        }
+                        if (_refreshInput)
                         {
                             enteredMessage = _message;
                             Output.PrintInput();
