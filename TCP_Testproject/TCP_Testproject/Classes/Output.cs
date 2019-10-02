@@ -152,7 +152,50 @@ namespace TCP_Testproject.Classes
             }
             Console.WriteLine();
             PrintString("Type your message and press enter to send:", Constants.alignmentLeft);
-            PrintString(Logic.enteredMessage, Constants.alignmentLeft);
+            PrintInput();
+        }
+
+        static public void PrintInput()
+        {
+            int CursorPosY = 0; // Used to determine where the console cursor has to be repositioned to
+
+            // Calculate the new cursor position
+            if (Console.CursorLeft == 1 && Logic.enteredMessage.Length % Console.WindowWidth == 0)
+            {
+                CursorPosY = Console.CursorTop - (Logic.enteredMessage.Length / Console.WindowWidth);
+            }
+            else if (Console.CursorLeft == 0 && Logic.enteredMessage.Length % Console.WindowWidth >= 119)
+            {
+                CursorPosY = Console.CursorTop - (Logic.enteredMessage.Length / Console.WindowWidth) + 1;
+            }
+            else
+            {
+                CursorPosY = Console.CursorTop - (Logic.enteredMessage.Length - 1) / Console.WindowWidth;
+            }
+
+            // Set cursor position so the current displayed input is overwritten completely
+            Console.SetCursorPosition(0, CursorPosY);
+            // Overwrite current displayed input with whitespaces
+            Console.Write(new string(' ', Logic.enteredMessage.Length + 1));
+
+            // Calculate the new cursor position
+            if (Console.CursorLeft == 1 && Logic.enteredMessage.Length / Console.WindowWidth > 0)
+            {
+                CursorPosY = Console.CursorTop - (Logic.enteredMessage.Length / Console.WindowWidth);
+            }
+            else if (Console.CursorLeft == 0 && Logic.enteredMessage.Length % Console.WindowWidth >= 119)
+            {
+                CursorPosY = Console.CursorTop - (Logic.enteredMessage.Length / Console.WindowWidth) + 1;
+            }
+            else
+            {
+                CursorPosY = Console.CursorTop - (Logic.enteredMessage.Length - 1) / Console.WindowWidth;
+            }
+
+            // Set cursor position so the current input is printed at the right position
+            Console.SetCursorPosition(0, CursorPosY);
+            // Print the current input
+            Console.Write(Logic.enteredMessage);
         }
 
         static private void PrintInitInterface()

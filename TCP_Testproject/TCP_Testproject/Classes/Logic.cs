@@ -169,7 +169,7 @@ namespace TCP_Testproject.Classes
                         WorkChatCommand(_userInput);
                         break;
                     default:
-                        byte[] buffer = encoder.GetBytes(Constants.delimUsername + DateTime.Now.ToString("T", new CultureInfo("de-DE")) + " | " + Constants.serverUsername + Constants.delimMsgData + _userInput);
+                        byte[] buffer = encoder.GetBytes(Constants.delimUsername + GetTimestampString() + " | " + Constants.serverUsername + Constants.delimMsgData + _userInput);
 
                         foreach (TcpClient broadcastMember in chatObjects.clientList)
                         {
@@ -293,7 +293,7 @@ namespace TCP_Testproject.Classes
                         if (_refreshScreen)
                         {
                             enteredMessage = _message;
-                            Output.PrintScreen();
+                            Output.PrintInput();
                         }
                     } while (_pressedKey.Key != ConsoleKey.Enter);
 
@@ -306,14 +306,14 @@ namespace TCP_Testproject.Classes
                             break;
                         default:
                             // Translate the passed message into ASCII and store it as a Byte array.
-                            Byte[] data = System.Text.Encoding.ASCII.GetBytes(Constants.delimUsername + DateTime.Now.ToString("T", new CultureInfo("de-DE")) + " | " + chatObjects.clientName +
+                            Byte[] data = System.Text.Encoding.ASCII.GetBytes(Constants.delimUsername + GetTimestampString() + " | " + chatObjects.clientName +
                                                                               Constants.delimMsgData + _message);
 
                             // Send the message to the connected TcpServer. 
                             stream.WriteAsync(data, 0, data.Length);
                             stream.FlushAsync();
 
-                            chatObjects.messageData.Add(new Message("You | " + DateTime.Now.ToString("T", new CultureInfo("de-DE")), _message, Constants.alignmentRight));
+                            chatObjects.messageData.Add(new Message("You | " + GetTimestampString(), _message, Constants.alignmentRight));
                             break;
                     }
                     // Print the screen
@@ -472,6 +472,11 @@ namespace TCP_Testproject.Classes
                     chatObjects.messageData.Add(new Message(chatObjects.clientName, notificationConfig, Constants.alignmentCenter));
                 }
             }
+        }
+
+        private static string GetTimestampString()
+        {
+            return DateTime.Now.ToString("T", new CultureInfo("de-DE"));
         }
     }
 }
