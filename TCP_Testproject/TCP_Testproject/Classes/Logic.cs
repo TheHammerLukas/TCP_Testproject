@@ -166,7 +166,7 @@ namespace TCP_Testproject.Classes
                 switch (DetermineIsCommand(_userInput, Constants.InstanceServer))
                 {
                     case true:
-                        WorkChatCommand(_userInput);
+                        WorkChatCommand(_userInput, Constants.InstanceServer);
                         break;
                     default:
                         byte[] buffer = encoder.GetBytes(Constants.delimAddData + GetTimestampString() + " | " + Constants.serverUsername + Constants.delimMsgData + _userInput);
@@ -314,7 +314,7 @@ namespace TCP_Testproject.Classes
                     switch (DetermineIsCommand(_message, Constants.InstanceClient))
                     {
                         case true:
-                            WorkChatCommand(_message);
+                            WorkChatCommand(_message, Constants.InstanceClient);
                             break;
                         default:
                             // Translate the passed message into UTF-8 and store it as a Byte array.
@@ -362,7 +362,7 @@ namespace TCP_Testproject.Classes
                 int bytesRead = 0;
 
                 string dataString = "";
-                string username = "";
+                string addData = "";
                 string message = "";
                 int startPosUsername = 0;
                 int startPosMessage = 0;
@@ -377,17 +377,17 @@ namespace TCP_Testproject.Classes
                     dataString = encoder.GetString(receivedData, 0, bytesRead);
                     startPosUsername = dataString.IndexOf(Constants.delimAddData, 0) + Constants.delimAddData.Length;
                     startPosMessage = dataString.IndexOf(Constants.delimMsgData, 0) + Constants.delimMsgData.Length;
-                    username = dataString.Substring(startPosUsername, startPosMessage - Constants.delimMsgData.Length - startPosUsername);
+                    addData = dataString.Substring(startPosUsername, startPosMessage - Constants.delimMsgData.Length - startPosUsername);
                     message = dataString.Substring(startPosMessage);
 
                     // Handle commands received from server
-                    if (username == Constants.serverUsername && (message.IndexOf(Constants.chatCmdClearAll) == 0 || message.IndexOf(Constants.chatCmdClsAll) == 0))
+                    if (addData == Constants.serverUsername && (message.IndexOf(Constants.chatCmdClearAll) == 0 || message.IndexOf(Constants.chatCmdClsAll) == 0))
                     {
-                        WorkChatCommand(message);
+                        WorkChatCommand(message, Constants.InstanceClient);
                     }
                     else
                     {
-                        chatObjects.messageData.Add(new Message(username, message, Constants.alignmentLeft));
+                        chatObjects.messageData.Add(new Message(addData, message, Constants.alignmentLeft));
                     }
 
                     // Let the program flash
@@ -417,9 +417,9 @@ namespace TCP_Testproject.Classes
         {
             if (message.StartsWith(Constants.chatCmdHelp) || 
                 message.StartsWith(Constants.chatCmdBcBlack) || message.StartsWith(Constants.chatCmdBcWhite) ||
-                message.StartsWith(Constants.chatCmdClear) || message.StartsWith(Constants.chatCmdCls) ||
-                currInstance == Constants.InstanceServer && 
-                (message.StartsWith(Constants.chatCmdClearAll) || message.StartsWith(Constants.chatCmdClsAll)) ||
+                message.Trim() == Constants.chatCmdClear || message.Trim() == Constants.chatCmdCls ||
+                (currInstance == Constants.InstanceServer && 
+                (message.StartsWith(Constants.chatCmdClearAll) || message.StartsWith(Constants.chatCmdClsAll))) ||
                 message.StartsWith(Constants.chatCmdNotificationBase)) 
             {
                 return true;
@@ -430,7 +430,7 @@ namespace TCP_Testproject.Classes
             }
         }
         
-        private static void WorkChatCommand(string chatCommand)
+        private static void WorkChatCommand(string chatCommand, string currInstance)
         {
             if (chatCommand.StartsWith(Constants.chatCmdHelp))
             {
@@ -450,10 +450,30 @@ namespace TCP_Testproject.Classes
                 Console.BackgroundColor = ConsoleColor.White;
                 Console.ForegroundColor = ConsoleColor.Black;
             }
-            else if (chatCommand.StartsWith(Constants.chatCmdClear) || 
-                     chatCommand.StartsWith(Constants.chatCmdCls) ||
-                     chatCommand.StartsWith(Constants.chatCmdClearAll) ||
+            else if (chatCommand.StartsWith(Constants.chatCmdClearAll) ||
                      chatCommand.StartsWith(Constants.chatCmdClsAll))
+            {
+                if (currInstance == Constants.InstanceServer)
+                {
+                    UTF8Encoding encoder = new UTF8Encoding();
+                    byte[] buffer = encoder.GetBytes(Constants.delimAddData + Constants.serverUsername + Constants.delimMsgData + "/clsall");
+
+                    foreach (TcpClient broadcastMember in chatObjects.clientList)
+                    {
+                        NetworkStream broadcastStream = broadcastMember.GetStream();
+
+                        broadcastStream.WriteAsync(buffer, 0, buffer.Length);
+                        broadcastStream.FlushAsync();
+                    }
+                }
+                else if (currInstance == Constants.InstanceClient)
+                {
+                    chatObjects.messageData.Clear();
+                }
+                Console.Clear();
+            }
+            else if (chatCommand.StartsWith(Constants.chatCmdClear) || 
+                     chatCommand.StartsWith(Constants.chatCmdCls))
             { 
                 chatObjects.messageData.Clear();
                 Console.Clear();
