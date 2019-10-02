@@ -227,23 +227,21 @@ namespace TCP_Testproject.Classes
         {
             string _outputString = "";
             string _textAlignment = "";
-            int _cntMessagesToHide = 0;
+            int _cntTotalLines = 0;
             int _maxMsgToDisplay = 0;
-
-            _maxMsgToDisplay = (Logic.chatObjects.messageData.Count - 1 - Console.WindowHeight + 6 - Logic.scrollOffset < 0 ?
-                                0 : Logic.chatObjects.messageData.Count - Console.WindowHeight + 6 - Logic.scrollOffset);
+            int _actualMsgToDisplay = 0;
+            int _lastCalculatedLines = 0;
+            // Calculate the maximum count of lines that can display messages
+            _maxMsgToDisplay = Console.WindowHeight - 6;
 
             // This for loop is so that the console does not autoscroll;
-            for (int i = Logic.chatObjects.messageData.Count - 1 - Logic.scrollOffset; i >= _maxMsgToDisplay + _cntMessagesToHide; i--)
+            for (int i = Logic.chatObjects.messageData.Count - 1 - Logic.scrollOffset; _cntTotalLines < _maxMsgToDisplay && i >= 0; i--)
             {
                 try
                 {
-                    _cntMessagesToHide += (Logic.chatObjects.messageData[i].additionalInfo.Length + 2 + Logic.chatObjects.messageData[i].message.Length) / Console.WindowWidth;
-                    
-                    if (Logic.chatObjects.messageData.Count - Console.WindowHeight + (6 + _cntMessagesToHide + Logic.scrollOffset) > Logic.chatObjects.messageData.Count)
-                    {
-                        _cntMessagesToHide = 0;
-                    }
+                    _lastCalculatedLines = ((Logic.chatObjects.messageData[i].additionalInfo.Length + 2 + Logic.chatObjects.messageData[i].message.Length) / Console.WindowWidth) + 1;
+                    _cntTotalLines += _lastCalculatedLines;
+                    _actualMsgToDisplay++;
                 }
                 catch
                 {
@@ -251,9 +249,14 @@ namespace TCP_Testproject.Classes
                 }
             }
 
-            for (int i = Logic.chatObjects.messageData.Count - Console.WindowHeight + (6 + _cntMessagesToHide) - Logic.scrollOffset < 0 ?
-                 0 : Logic.chatObjects.messageData.Count - Console.WindowHeight + (6 + _cntMessagesToHide) - Logic.scrollOffset;
-                 i < Logic.chatObjects.messageData.Count - Logic.scrollOffset;
+            if (_lastCalculatedLines > 1)
+            {
+                _actualMsgToDisplay--;
+            }
+
+            for (int i = (Logic.chatObjects.messageData.Count - _actualMsgToDisplay - Logic.scrollOffset < 0 ?
+                 0 : Logic.chatObjects.messageData.Count - _actualMsgToDisplay - Logic.scrollOffset);
+                 i <= Logic.chatObjects.messageData.Count - 1 - Logic.scrollOffset;
                  i++)
             {
                 _outputString = Logic.chatObjects.messageData[i].message;
