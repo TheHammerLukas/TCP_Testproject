@@ -228,29 +228,18 @@ namespace TCP_Testproject.Classes
             string _outputString = "";
             string _textAlignment = "";
             int _cntMessagesToHide = 0;
+            int _maxMsgToDisplay = 0;
+
+            _maxMsgToDisplay = (Logic.chatObjects.messageData.Count - 1 - Console.WindowHeight + 6 - Logic.scrollOffset < 0 ?
+                                0 : Logic.chatObjects.messageData.Count - Console.WindowHeight + 6 - Logic.scrollOffset);
 
             // This for loop is so that the console does not autoscroll;
-            for (int i = Logic.chatObjects.messageData.Count - Logic.scrollOffset; i >= Logic.chatObjects.messageData.Count - Console.WindowHeight + 6 - Logic.scrollOffset; i--)
+            for (int i = Logic.chatObjects.messageData.Count - 1 - Logic.scrollOffset; i >= _maxMsgToDisplay + _cntMessagesToHide; i--)
             {
                 try
                 {
-                    if (Logic.chatObjects.messageData[i].additionalInfo.Length + 2 + Logic.chatObjects.messageData[i].message.Length <= Console.WindowWidth - 1)
-                    {
-                        // nothing happens => check next message;
-                    }
-                    else if (Logic.chatObjects.messageData[i].additionalInfo.Length + 2 + Logic.chatObjects.messageData[i].message.Length <= (Console.WindowWidth - 1) * 2)
-                    {
-                        _cntMessagesToHide += 1;
-                    }
-                    else if (Logic.chatObjects.messageData[i].additionalInfo.Length + 2 + Logic.chatObjects.messageData[i].message.Length > Console.WindowWidth - 1)
-                    {
-                        _cntMessagesToHide += 2;
-                    }
-                    else
-                    {
-                        // nothing happens => check next message;
-                    }
-
+                    _cntMessagesToHide += (Logic.chatObjects.messageData[i].additionalInfo.Length + 2 + Logic.chatObjects.messageData[i].message.Length) / Console.WindowWidth;
+                    
                     if (Logic.chatObjects.messageData.Count - Console.WindowHeight + (6 + _cntMessagesToHide + Logic.scrollOffset) > Logic.chatObjects.messageData.Count)
                     {
                         _cntMessagesToHide = 0;
