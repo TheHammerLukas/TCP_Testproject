@@ -130,19 +130,28 @@ namespace TCP_Testproject.Classes
                 //message has successfully been received
                 // Broadcast recieved message to all clients except the client that sent the information
                 bufferincmessage = encoder.GetString(message, 0, bytesRead);
-                byte[] buffer = encoder.GetBytes(bufferincmessage);
 
-                foreach (TcpClient broadcastMember in chatObjects.clientList)
+                switch (DetermineIsCommand(bufferincmessage.Substring(bufferincmessage.IndexOf(Constants.delimMsgData, 0) + Constants.delimMsgData.Length), Constants.InstanceServer))
                 {
-                    if (broadcastMember != client)
-                    {
-                        NetworkStream broadcastStream = broadcastMember.GetStream();
+                    case true:
+                        WorkChatCommand(bufferincmessage.Substring(bufferincmessage.IndexOf(Constants.delimMsgData, 0) + Constants.delimMsgData.Length), Constants.InstanceServer);
+                        break;
+                    default:
+                        byte[] buffer = encoder.GetBytes(bufferincmessage);
 
-                        broadcastStream.Write(buffer, 0, buffer.Length);
-                        Console.WriteLine("Sent to ip=\"{0}\" string=\"{1}\"", 
-                                          ((IPEndPoint)broadcastMember.Client.RemoteEndPoint).Address.ToString(), 
-                                          bufferincmessage);
-                    }
+                        foreach (TcpClient broadcastMember in chatObjects.clientList)
+                        {
+                            if (broadcastMember != client)
+                            {
+                                NetworkStream broadcastStream = broadcastMember.GetStream();
+
+                                broadcastStream.Write(buffer, 0, buffer.Length);
+                                Console.WriteLine("Sent to ip=\"{0}\" string=\"{1}\"",
+                                                  ((IPEndPoint)broadcastMember.Client.RemoteEndPoint).Address.ToString(),
+                                                  bufferincmessage);
+                            }
+                        }
+                        break;
                 }
             }
 
@@ -328,8 +337,12 @@ namespace TCP_Testproject.Classes
                             chatObjects.messageData.Add(new Message("You | " + GetTimestampString(), _message, Constants.alignmentRight));
                             break;
                     }
-                    // Print the screen
-                    Output.PrintScreen();
+
+                    if (!_message.StartsWith(Constants.chatCmdMatzesMom))
+                    {
+                        // Print the screen
+                        Output.PrintScreen();
+                    }
                 }
             }
             catch (ArgumentNullException e)
@@ -420,7 +433,8 @@ namespace TCP_Testproject.Classes
                 message.Trim() == Constants.chatCmdClear || message.Trim() == Constants.chatCmdCls ||
                 (currInstance == Constants.InstanceServer && 
                 (message.StartsWith(Constants.chatCmdClearAll) || message.StartsWith(Constants.chatCmdClsAll))) ||
-                message.StartsWith(Constants.chatCmdNotificationBase)) 
+                message.StartsWith(Constants.chatCmdNotificationBase) ||
+                message.StartsWith(Constants.chatCmdMatzesMom)) 
             {
                 return true;
             }
@@ -502,6 +516,39 @@ namespace TCP_Testproject.Classes
                                                 (Properties.Settings.Default.doNotifyVisual == true ? "enabled;" : "disabled;");
 
                     chatObjects.messageData.Add(new Message(chatObjects.clientName, notificationConfig, Constants.alignmentCenter));
+                }
+            }
+            else if (chatCommand.Contains(Constants.chatCmdMatzesMom))
+            {
+                if (currInstance == Constants.InstanceServer)
+                {
+                    Random random = new Random();
+                    int cntRandom = random.Next(0, Objects.matzesMomJokes.Count);
+
+                    UTF8Encoding encoder = new UTF8Encoding();
+                    byte[] buffer = encoder.GetBytes(Constants.delimAddData + Constants.serverUsername + Constants.delimMsgData + Objects.matzesMomJokes[cntRandom]);
+
+                    foreach (TcpClient broadcastMember in chatObjects.clientList)
+                    {
+                        NetworkStream broadcastStream = broadcastMember.GetStream();
+
+                        broadcastStream.WriteAsync(buffer, 0, buffer.Length);
+                        broadcastStream.FlushAsync();
+                    }
+                }
+                else if (currInstance == Constants.InstanceClient)
+                {
+                    // Get a client stream for reading and writing.
+                    //  Stream stream = client.GetStream();
+                    NetworkStream stream = chatObjects.client.GetStream();
+
+                    // Translate the passed message into UTF-8 and store it as a Byte array.
+                    Byte[] data = System.Text.Encoding.UTF8.GetBytes(Constants.delimAddData + GetTimestampString() + " | " + chatObjects.clientName +
+                                                                      Constants.delimMsgData + Constants.chatCmdMatzesMom);
+
+                    // Send the message to the connected TcpServer. 
+                    stream.WriteAsync(data, 0, data.Length);
+                    stream.FlushAsync();
                 }
             }
         }
