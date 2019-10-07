@@ -285,21 +285,24 @@ namespace TCP_Testproject.Classes
                             if (chatObjects.messageData.Count - scrollOffset > Console.WindowHeight - 6 && chatObjects.messageData.Count > Console.WindowHeight - 6)
                             {
                                 scrollOffset++;
+                                _refreshScreen = true;
                             }
-                            _refreshScreen = true;
                         }
                         else if (_pressedKey.Key == ConsoleKey.PageDown)
                         {
                             if (scrollOffset > 0 && chatObjects.messageData.Count > Console.WindowHeight - 6)
                             {
                                 scrollOffset--;
+                                _refreshScreen = true;
                             }
-                            _refreshScreen = true;
                         }
-                        else if (_pressedKey.Key == ConsoleKey.Backspace && _message.Length > 0)
+                        else if (_pressedKey.Key == ConsoleKey.Backspace)
                         {
-                            _message = _message.Remove(_message.Length - 1);
-                            _refreshInput = true;
+                            if (_message.Length > 0)
+                            {
+                                _message = _message.Remove(_message.Length - 1);
+                                _refreshInput = true;
+                            }
                         }
                         else if (_pressedKey.Key != ConsoleKey.Enter)
                         {
