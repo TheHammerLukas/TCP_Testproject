@@ -433,9 +433,8 @@ namespace TCP_Testproject.Classes
         {
             if (message.StartsWith(Constants.chatCmdHelp) || 
                 message.StartsWith(Constants.chatCmdBcBlack) || message.StartsWith(Constants.chatCmdBcWhite) ||
-                message.Trim() == Constants.chatCmdClear || message.Trim() == Constants.chatCmdCls ||
-                (currInstance == Constants.InstanceServer && 
-                (message.StartsWith(Constants.chatCmdClearAll) || message.StartsWith(Constants.chatCmdClsAll))) ||
+                message.Trim() == Constants.chatCmdClear || message.Trim() == Constants.chatCmdCls || 
+                message.StartsWith(Constants.chatCmdClearAll) || message.StartsWith(Constants.chatCmdClsAll) ||
                 message.StartsWith(Constants.chatCmdNotificationBase) ||
                 message.StartsWith(Constants.chatCmdMatzesMom)) 
             {
