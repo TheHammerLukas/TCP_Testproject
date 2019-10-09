@@ -4,33 +4,53 @@ namespace TCP_Testproject.Classes
 {
     class Output
     {
+        static public bool isPrinting = false;
+
         static public void PrintScreen()
         {
-            PrintHeader();
+            
 
             if (Logic.chatState == Constants.ProgramState.initializing)
             {
+                PrintHeader();
                 PrintInitInterface();
             }
             else if (Logic.chatState == Constants.ProgramState.initialized)
             {
+                PrintHeader();
                 PrintClientCreate();
             }
             else if (Logic.chatState == Constants.ProgramState.connecting)
             {
+                PrintHeader();
                 PrintClientSelectServer();
             }
             else if (Logic.chatState == Constants.ProgramState.connected)
             {
+                PrintHeader();
                 PrintClientConnectSuccess();
             }
             else if (Logic.chatState == Constants.ProgramState.connectionerror)
             {
+                PrintHeader();
                 PrintClientConnectError();
             }
             else if (Logic.chatState == Constants.ProgramState.communicating)
             {
-                PrintClientInterface();
+                // try to print; only print when not currently printing already
+                bool _cycleIsPrinting;
+
+                do
+                {
+                    _cycleIsPrinting = isPrinting;
+                    if (!_cycleIsPrinting)
+                    {
+                        isPrinting = true;
+                        PrintHeader();
+                        PrintClientInterface();
+                        isPrinting = false;
+                    }
+                } while (_cycleIsPrinting);
             }
         }
 
