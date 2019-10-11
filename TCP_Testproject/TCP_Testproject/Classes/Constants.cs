@@ -17,6 +17,9 @@ namespace TCP_Testproject.Classes
         public const string InstanceClient = "ClientInstance";
         public const string InstanceServer = "ServerInstance";
 
+        // Color constants
+        public const ConsoleColor consoleColorServer = ConsoleColor.Red;
+
         // Program state constants
         public enum ProgramState
         {

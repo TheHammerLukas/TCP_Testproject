@@ -310,7 +310,29 @@ namespace TCP_Testproject.Classes
             {
                 case Constants.alignmentLeft:
                     Console.SetCursorPosition(Console.CursorLeft, Console.CursorTop);
-                    Console.WriteLine(outputString);
+                    if (outputString.StartsWith(Constants.serverUsername))
+                    {
+                        ConsoleColor currForegroundColor = Console.ForegroundColor;
+                        
+                        Console.ForegroundColor = Constants.consoleColorServer;
+                        Console.Write(outputString.Substring(0, Constants.serverUsername.Length));
+                        Console.ForegroundColor = currForegroundColor;
+                        Console.WriteLine(outputString.Substring(Constants.serverUsername.Length));
+                    }
+                    else if (outputString.IndexOf(Constants.serverUsername, 0) == 11)
+                    {
+                        ConsoleColor currForegroundColor = Console.ForegroundColor;
+
+                        Console.Write(outputString.Substring(0, 11));
+                        Console.ForegroundColor = Constants.consoleColorServer;
+                        Console.Write(outputString.Substring(11, Constants.serverUsername.Length));
+                        Console.ForegroundColor = currForegroundColor;
+                        Console.WriteLine(outputString.Substring(11 + Constants.serverUsername.Length));
+                    }
+                    else
+                    {
+                        Console.WriteLine(outputString);
+                    }
                     break;
                 case Constants.alignmentCenter:
                     Console.SetCursorPosition(((Console.WindowWidth - outputString.Length) / 2), Console.CursorTop);
