@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Net;
@@ -179,7 +180,8 @@ namespace TCP_Testproject.Classes
                         WorkChatCommand(_userInput, Constants.InstanceServer);
                         break;
                     default:
-                        byte[] buffer = encoder.GetBytes(Constants.delimAddData + GetTimestampString() + " | " + Constants.serverUsername + Constants.delimMsgData + _userInput);
+                        byte[] buffer = encoder.GetBytes(Constants.delimAddData + GetTimestampString() + " | " + Constants.serverUsername +
+                                                         Constants.delimMsgData + _userInput + Constants.delimMsgEnd);
 
                         foreach (TcpClient broadcastMember in chatObjects.clientList)
                         {
@@ -332,7 +334,7 @@ namespace TCP_Testproject.Classes
                         default:
                             // Translate the passed message into UTF-8 and store it as a Byte array.
                             Byte[] data = System.Text.Encoding.UTF8.GetBytes(Constants.delimAddData + GetTimestampString() + " | " + chatObjects.clientName +
-                                                                              Constants.delimMsgData + _message);
+                                                                             Constants.delimMsgData + _message + Constants.delimMsgEnd);
 
                             // Send the message to the connected TcpServer. 
                             stream.WriteAsync(data, 0, data.Length);
@@ -392,31 +394,38 @@ namespace TCP_Testproject.Classes
 
                     // decode the received data
                     dataString = encoder.GetString(receivedData, 0, bytesRead);
-                    startPosUsername = dataString.IndexOf(Constants.delimAddData, 0) + Constants.delimAddData.Length;
-                    startPosMessage = dataString.IndexOf(Constants.delimMsgData, 0) + Constants.delimMsgData.Length;
-                    addData = dataString.Substring(startPosUsername, startPosMessage - Constants.delimMsgData.Length - startPosUsername);
-                    message = dataString.Substring(startPosMessage);
 
-                    // Handle commands received from server
-                    if (addData == Constants.serverUsername && (message.IndexOf(Constants.chatCmdClearAll) == 0 || message.IndexOf(Constants.chatCmdClsAll) == 0))
-                    {
-                        WorkChatCommand(message, Constants.InstanceClient);
-                    }
-                    else
-                    {
-                        chatObjects.messageData.Add(new Message(addData, message, Constants.alignmentLeft));
-                    }
+                    List<string> receivedMessages = new List<string>();
+                    receivedMessages.AddRange(dataString.Split(new string[] { Constants.delimMsgEnd }, StringSplitOptions.RemoveEmptyEntries));
 
-                    // Let the program flash
-                    if (!Program.ProgramHasFocus())
+                    foreach (string receivedMessage in receivedMessages)
                     {
-                        if (Properties.Settings.Default.doNotifyVisual)
+                        startPosUsername = receivedMessage.IndexOf(Constants.delimAddData, 0) + Constants.delimAddData.Length;
+                        startPosMessage = receivedMessage.IndexOf(Constants.delimMsgData, 0) + Constants.delimMsgData.Length;
+                        addData = receivedMessage.Substring(startPosUsername, startPosMessage - Constants.delimMsgData.Length - startPosUsername);
+                        message = receivedMessage.Substring(startPosMessage);
+
+                        // Handle commands received from server
+                        if (addData == Constants.serverUsername && (message.IndexOf(Constants.chatCmdClearAll) == 0 || message.IndexOf(Constants.chatCmdClsAll) == 0))
                         {
-                            Program.StartFlashTaskbarIcon();
+                            WorkChatCommand(message, Constants.InstanceClient);
                         }
-                        if (Properties.Settings.Default.doNotifySound)
+                        else
                         {
-                            Console.Beep();
+                            chatObjects.messageData.Add(new Message(addData, message, Constants.alignmentLeft));
+                        }
+
+                        // Let the program flash
+                        if (!Program.ProgramHasFocus())
+                        {
+                            if (Properties.Settings.Default.doNotifyVisual)
+                            {
+                                Program.StartFlashTaskbarIcon();
+                            }
+                            if (Properties.Settings.Default.doNotifySound)
+                            {
+                                Console.Beep();
+                            }
                         }
                     }
 

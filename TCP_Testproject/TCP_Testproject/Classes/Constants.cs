@@ -9,8 +9,9 @@ namespace TCP_Testproject.Classes
     class Constants
     {
         // Delimiter constants
-        public const string delimAddData = ":#ADDDATA:";
-        public const string delimMsgData = ":#MSGDATA:";
+        public const string delimMsgEnd = "~#MSGEND~";
+        public const string delimAddData = "~#ADDDATA~";
+        public const string delimMsgData = "~#MSGDATA~";
 
         // Name constants
         public const string serverUsername = "<Server>";
