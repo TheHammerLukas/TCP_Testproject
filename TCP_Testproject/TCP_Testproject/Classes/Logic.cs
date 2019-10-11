@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 
 namespace TCP_Testproject.Classes
@@ -141,7 +142,7 @@ namespace TCP_Testproject.Classes
 
                         foreach (TcpClient broadcastMember in chatObjects.clientList)
                         {
-                            if (broadcastMember != client)
+                            if (broadcastMember != client && !chatObjects.muteList.Contains(((IPEndPoint)tcpClient.Client.RemoteEndPoint).Address.ToString()))
                             {
                                 NetworkStream broadcastStream = broadcastMember.GetStream();
 
@@ -436,7 +437,8 @@ namespace TCP_Testproject.Classes
                 message.Trim() == Constants.chatCmdClear || message.Trim() == Constants.chatCmdCls || 
                 message.StartsWith(Constants.chatCmdClearAll) || message.StartsWith(Constants.chatCmdClsAll) ||
                 message.StartsWith(Constants.chatCmdNotificationBase) ||
-                message.StartsWith(Constants.chatCmdMatzesMom)) 
+                message.StartsWith(Constants.chatCmdMatzesMom) || 
+                (currInstance == Constants.InstanceServer && message.StartsWith(Constants.chatCmdMuteBase))) 
             {
                 return true;
             }
@@ -520,7 +522,7 @@ namespace TCP_Testproject.Classes
                     chatObjects.messageData.Add(new Message(chatObjects.clientName, notificationConfig, Constants.alignmentCenter));
                 }
             }
-            else if (chatCommand.Contains(Constants.chatCmdMatzesMom))
+            else if (chatCommand.StartsWith(Constants.chatCmdMatzesMom))
             {
                 if (currInstance == Constants.InstanceServer)
                 {
@@ -551,6 +553,50 @@ namespace TCP_Testproject.Classes
                     // Send the message to the connected TcpServer. 
                     stream.WriteAsync(data, 0, data.Length);
                     stream.FlushAsync();
+                }
+            }
+            else if (chatCommand.StartsWith(Constants.chatCmdMuteBase))
+            {
+                if (chatCommand.Contains(Constants.chatCmdMuteAdd))
+                {
+                    // Regex to recognize IP addresses
+                    Regex RegexIpAddress = new Regex(@"\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b");
+                    
+                    // Find all IPs in the input
+                    MatchCollection MatchedIps = RegexIpAddress.Matches(chatCommand);
+                    // Add all specified IPs to the muteList
+                    foreach (Match IpToMute in MatchedIps)
+                    {
+                        if (!chatObjects.muteList.Contains(IpToMute.Value))
+                        {
+                            chatObjects.muteList.Add(IpToMute.Value);
+                        }
+                    }
+                }
+                else if (chatCommand.Contains(Constants.chatCmdMuteRemove))
+                {
+                    // Remove an ip from the muteList
+                    // Regex to recognize IP addresses
+                    Regex RegexIpAddress = new Regex(@"\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b");
+
+                    // Find all IPs in the input
+                    MatchCollection MatchedIps = RegexIpAddress.Matches(chatCommand);
+                    // Add all specified IPs to the muteList
+                    foreach (Match IpToUnmute in MatchedIps)
+                    {
+                        if (chatObjects.muteList.Contains(IpToUnmute.Value))
+                        {
+                            chatObjects.muteList.Remove(IpToUnmute.Value);
+                        }
+                    }
+                }
+                else
+                {
+                    // Print out all ips from the muteList
+                    foreach (string MutedIp in chatObjects.muteList)
+                    {
+                        Console.WriteLine(MutedIp);
+                    }
                 }
             }
         }

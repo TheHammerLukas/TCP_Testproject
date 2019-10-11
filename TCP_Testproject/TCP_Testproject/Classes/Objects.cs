@@ -10,6 +10,7 @@ namespace TCP_Testproject.Classes
         public List<TcpClient> clientList = new List<TcpClient>();
         public TcpClient client = new TcpClient();
         public string clientName = "<NoNameSpecified>";
+        public List<string> muteList = new List<string>();
         public static List<string> matzesMomJokes = new List<string>();
 
         public Objects()

@@ -50,5 +50,8 @@ namespace TCP_Testproject.Classes
         public const string chatCmdNotificationSound = "-s";
         public const string chatCmdNotificationVisual = "-v";
         public const string chatCmdMatzesMom = "/matzesmom";
+        public const string chatCmdMuteBase = "/mute";
+        public const string chatCmdMuteAdd = "-a";
+        public const string chatCmdMuteRemove = "-r";
     }
 }
