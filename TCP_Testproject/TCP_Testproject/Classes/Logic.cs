@@ -414,18 +414,18 @@ namespace TCP_Testproject.Classes
                         {
                             chatObjects.messageData.Add(new Message(addData, message, Constants.alignmentLeft));
                         }
+                    }
 
-                        // Let the program flash
-                        if (!Program.ProgramHasFocus())
+                    // Let the program flash
+                    if (!Program.ProgramHasFocus())
+                    {
+                        if (Properties.Settings.Default.doNotifyVisual)
                         {
-                            if (Properties.Settings.Default.doNotifyVisual)
-                            {
-                                Program.StartFlashTaskbarIcon();
-                            }
-                            if (Properties.Settings.Default.doNotifySound)
-                            {
-                                Console.Beep();
-                            }
+                            Program.StartFlashTaskbarIcon();
+                        }
+                        if (Properties.Settings.Default.doNotifySound)
+                        {
+                            Console.Beep();
                         }
                     }
 
