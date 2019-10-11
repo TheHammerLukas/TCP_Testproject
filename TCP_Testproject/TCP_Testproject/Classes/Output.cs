@@ -310,7 +310,8 @@ namespace TCP_Testproject.Classes
             {
                 case Constants.alignmentLeft:
                     Console.SetCursorPosition(Console.CursorLeft, Console.CursorTop);
-                    if (outputString.StartsWith(Constants.serverUsername))
+                    
+                    if (outputString.StartsWith(Constants.serverUsername)) // Display of server username when /matzesmom is invoked
                     {
                         ConsoleColor currForegroundColor = Console.ForegroundColor;
                         
@@ -319,7 +320,7 @@ namespace TCP_Testproject.Classes
                         Console.ForegroundColor = currForegroundColor;
                         Console.WriteLine(outputString.Substring(Constants.serverUsername.Length));
                     }
-                    else if (outputString.IndexOf(Constants.serverUsername, 0) == 11)
+                    else if (outputString.IndexOf(Constants.serverUsername, 0) == 11) // Display of server username when server sends a message
                     {
                         ConsoleColor currForegroundColor = Console.ForegroundColor;
 
