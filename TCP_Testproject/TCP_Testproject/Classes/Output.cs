@@ -103,7 +103,7 @@ namespace TCP_Testproject.Classes
             {
                 PrintString("/mute is used to display all currently muted ip adresses", Constants.alignmentLeft);
                 PrintString("-a is used to add ips (multiple ips can be specified at once) to the mute list", Constants.alignmentLeft);
-                PrintString("-a is used to remove ips (multiple ips can be specified at once) from the mute list", Constants.alignmentLeft);
+                PrintString("-r is used to remove ips (multiple ips can be specified at once) from the mute list", Constants.alignmentLeft);
             }
             else
             {
