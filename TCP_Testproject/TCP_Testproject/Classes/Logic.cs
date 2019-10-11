@@ -132,7 +132,7 @@ namespace TCP_Testproject.Classes
                 // Broadcast recieved message to all clients except the client that sent the information
                 bufferincmessage = encoder.GetString(message, 0, bytesRead);
 
-                switch (DetermineIsCommand(bufferincmessage.Substring(bufferincmessage.IndexOf(Constants.delimMsgData, 0) + Constants.delimMsgData.Length), Constants.InstanceServer))
+                switch (DetermineIsCommand(bufferincmessage.Substring(bufferincmessage.IndexOf(Constants.delimMsgData, 0) + Constants.delimMsgData.Length), Constants.InstanceClient))
                 {
                     case true:
                         WorkChatCommand(bufferincmessage.Substring(bufferincmessage.IndexOf(Constants.delimMsgData, 0) + Constants.delimMsgData.Length), Constants.InstanceServer);
