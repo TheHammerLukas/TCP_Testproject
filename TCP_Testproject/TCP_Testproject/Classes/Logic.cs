@@ -14,6 +14,7 @@ namespace TCP_Testproject.Classes
     {
         public static Objects chatObjects = new Objects();
         public static Constants.ProgramState chatState = Constants.ProgramState.initializing;
+        public static Regex RegexIpAddress = new Regex(@"\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b"); // Regex to recognize IP addresses
         public static int scrollOffset = 0;
         public static string enteredMessage = String.Empty;
 
@@ -228,9 +229,12 @@ namespace TCP_Testproject.Classes
             // Work: 10.110.113.233
             string ipAddress = String.Empty;
 
-            Output.PrintScreen();
-            ipAddress = Console.ReadLine();
-            ipAddress = ipAddress != String.Empty ? ipAddress : "127.0.0.1";
+            do
+            {
+                Output.PrintScreen();
+                ipAddress = Console.ReadLine();
+                ipAddress = ipAddress != String.Empty ? ipAddress : "127.0.0.1";
+            } while (!RegexIpAddress.IsMatch(ipAddress));
 
             do
             {
@@ -567,10 +571,7 @@ namespace TCP_Testproject.Classes
             else if (chatCommand.StartsWith(Constants.chatCmdMuteBase))
             {
                 if (chatCommand.Contains(Constants.chatCmdMuteAdd))
-                {
-                    // Regex to recognize IP addresses
-                    Regex RegexIpAddress = new Regex(@"\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b");
-                    
+                {              
                     // Find all IPs in the input
                     MatchCollection MatchedIps = RegexIpAddress.Matches(chatCommand);
                     // Add all specified IPs to the muteList
