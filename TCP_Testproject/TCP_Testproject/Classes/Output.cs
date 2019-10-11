@@ -63,6 +63,8 @@ namespace TCP_Testproject.Classes
             PrintString("/bcwhite = change to white theme", Constants.alignmentLeft);
             PrintString("/clear or /cls = clear screen", Constants.alignmentLeft);
             PrintString("/notification = manage notification settings", Constants.alignmentLeft);
+            PrintString("/matzesmom = broadcasts a joke to all connected clients", Constants.alignmentLeft);
+            PrintString("/mute = manage muted clients [Server Only]", Constants.alignmentLeft);
             PrintString("Press any key to return to chat!", Constants.alignmentCenter);
 
             Console.ReadKey();
@@ -96,6 +98,12 @@ namespace TCP_Testproject.Classes
                 PrintString("/notification is used to display the current notification settings", Constants.alignmentLeft);
                 PrintString("-s is used to toggle the sound notification 'on' or 'off'", Constants.alignmentLeft);
                 PrintString("-v is used to toggle the visual notification 'on' or 'off'", Constants.alignmentLeft);
+            }
+            else if (chatCommand.StartsWith(Constants.chatCmdMuteBase))
+            {
+                PrintString("/mute is used to display all currently muted ip adresses", Constants.alignmentLeft);
+                PrintString("-a is used to add ips (multiple ips can be specified at once) to the mute list", Constants.alignmentLeft);
+                PrintString("-a is used to remove ips (multiple ips can be specified at once) from the mute list", Constants.alignmentLeft);
             }
             else
             {
