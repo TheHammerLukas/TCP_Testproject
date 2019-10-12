@@ -54,9 +54,12 @@ namespace TCP_Testproject.Classes
             }
         }
 
-        static public void PrintHelp()
+        static public void PrintHelp(string currInstance)
         {
-            PrintHeader();
+            if (currInstance == Constants.InstanceClient)
+            {
+                PrintHeader();
+            }
 
             PrintString("Help Menu:", Constants.alignmentCenter);
             PrintString("/bcblack = change to dark theme", Constants.alignmentLeft);
@@ -65,14 +68,20 @@ namespace TCP_Testproject.Classes
             PrintString("/notification = manage notification settings", Constants.alignmentLeft);
             PrintString("/matzesmom = broadcasts a joke to all connected clients", Constants.alignmentLeft);
             PrintString("/mute = manage muted clients [Server Only]", Constants.alignmentLeft);
-            PrintString("Press any key to return to chat!", Constants.alignmentCenter);
-
-            Console.ReadKey();
+            
+            if (currInstance == Constants.InstanceClient)
+            {
+                PrintString("Press any key to return to chat!", Constants.alignmentCenter);
+                Console.ReadKey();
+            }
         }
 
-        static public void PrintCommandHelp(string chatCommand)
+        static public void PrintCommandHelp(string chatCommand, string currInstance)
         {
-            PrintHeader();
+            if (currInstance == Constants.InstanceClient)
+            {
+                PrintHeader();
+            }
 
             PrintString("Help Menu for specific commands:", Constants.alignmentCenter);
 
@@ -109,9 +118,12 @@ namespace TCP_Testproject.Classes
             {
                 PrintString("No help exists for the specified command!", Constants.alignmentLeft);
             }
-            PrintString("Press any key to return to chat!", Constants.alignmentCenter);
 
-            Console.ReadKey();
+            if (currInstance == Constants.InstanceClient)
+            {
+                PrintString("Press any key to return to chat!", Constants.alignmentCenter);
+                Console.ReadKey();
+            }
         }
 
         static private void PrintHeader()

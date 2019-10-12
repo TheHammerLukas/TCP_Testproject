@@ -465,11 +465,11 @@ namespace TCP_Testproject.Classes
         {
             if (chatCommand.StartsWith(Constants.chatCmdHelp))
             {
-                Output.PrintHelp();
+                Output.PrintHelp(currInstance);
             }
             else if (chatCommand.Contains(Constants.chatCmdCommandHelp))
             {
-                Output.PrintCommandHelp(chatCommand);
+                Output.PrintCommandHelp(chatCommand, currInstance);
             }
             else if (chatCommand.StartsWith(Constants.chatCmdBcBlack))
             {
