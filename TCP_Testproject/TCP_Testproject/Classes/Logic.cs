@@ -212,7 +212,7 @@ namespace TCP_Testproject.Classes
                 Output.PrintScreen();
                 _desiredUsername = Console.ReadLine();
             } while (_desiredUsername == Constants.serverUsername || _desiredUsername == Constants.delimAddData ||
-                     _desiredUsername == Constants.delimMsgData);
+                     _desiredUsername == Constants.delimMsgData || _desiredUsername == Constants.delimMsgEnd);
 
             chatObjects.clientName = _desiredUsername;
 
