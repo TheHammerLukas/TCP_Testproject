@@ -311,6 +311,11 @@ namespace TCP_Testproject.Classes
                                 _refreshInput = true;
                             }
                         }
+                        else if (_pressedKey.Key == ConsoleKey.P) // Debug key
+                        {
+                            new Thread(new ThreadStart(Output.PrintScreen)).Start();
+                            Output.PrintScreen();
+                        }
                         else if (_pressedKey.Key != ConsoleKey.Enter)
                         {
                             _message += _pressedKey.KeyChar;
