@@ -311,7 +311,7 @@ namespace TCP_Testproject.Classes
                                 _refreshInput = true;
                             }
                         }
-                        else if (_pressedKey.Key == ConsoleKey.P) // Debug key
+                        else if (_pressedKey.Key == ConsoleKey.Decimal) // Debug key
                         {
                             new Thread(new ThreadStart(Output.PrintScreen)).Start();
                             Output.PrintScreen();
