@@ -480,11 +480,13 @@ namespace TCP_Testproject.Classes
             {
                 Console.BackgroundColor = ConsoleColor.Black;
                 Console.ForegroundColor = ConsoleColor.Gray;
+                Output.consoleColorServer = Constants.consoleColorServerBcBlack;
             }
             else if (chatCommand.StartsWith(Constants.chatCmdBcWhite))
             {
                 Console.BackgroundColor = ConsoleColor.White;
                 Console.ForegroundColor = ConsoleColor.Black;
+                Output.consoleColorServer = Constants.consoleColorServerBcWhite;
             }
             else if (chatCommand.StartsWith(Constants.chatCmdClearAll) ||
                      chatCommand.StartsWith(Constants.chatCmdClsAll))

@@ -5,6 +5,7 @@ namespace TCP_Testproject.Classes
     class Output
     {
         static public bool isPrinting = false;
+        static public ConsoleColor consoleColorServer = Constants.consoleColorServerBcBlack;
 
         static public void PrintScreen()
         {
@@ -345,7 +346,7 @@ namespace TCP_Testproject.Classes
                     {
                         ConsoleColor currForegroundColor = Console.ForegroundColor;
                         
-                        Console.ForegroundColor = Constants.consoleColorServer;
+                        Console.ForegroundColor = consoleColorServer;
                         Console.Write(outputString.Substring(0, Constants.serverUsername.Length));
                         Console.ForegroundColor = currForegroundColor;
                         Console.WriteLine(outputString.Substring(Constants.serverUsername.Length));
@@ -355,7 +356,7 @@ namespace TCP_Testproject.Classes
                         ConsoleColor currForegroundColor = Console.ForegroundColor;
 
                         Console.Write(outputString.Substring(0, 11));
-                        Console.ForegroundColor = Constants.consoleColorServer;
+                        Console.ForegroundColor = consoleColorServer;
                         Console.Write(outputString.Substring(11, Constants.serverUsername.Length));
                         Console.ForegroundColor = currForegroundColor;
                         Console.WriteLine(outputString.Substring(11 + Constants.serverUsername.Length));
