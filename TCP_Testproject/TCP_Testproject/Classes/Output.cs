@@ -9,7 +9,11 @@ namespace TCP_Testproject.Classes
 
         static public void PrintScreen()
         {
-            
+            if (Logic.bcHaxxorActive)
+            {
+                drawBcHaxxOr();
+                Console.SetCursorPosition(0, 0);
+            }
 
             if (Logic.chatState == Constants.ProgramState.initializing)
             {
@@ -56,7 +60,7 @@ namespace TCP_Testproject.Classes
 
         static public void PrintHelp(string currInstance)
         {
-            if (currInstance == Constants.InstanceClient)
+            if (currInstance == Constants.instanceServer)
             {
                 PrintHeader();
             }
@@ -69,7 +73,7 @@ namespace TCP_Testproject.Classes
             PrintString("/matzesmom = broadcasts a joke to all connected clients", Constants.alignmentLeft);
             PrintString("/mute = manage muted clients [Server Only]", Constants.alignmentLeft);
             
-            if (currInstance == Constants.InstanceClient)
+            if (currInstance == Constants.instanceServer)
             {
                 PrintString("Press any key to return to chat!", Constants.alignmentCenter);
                 Console.ReadKey();
@@ -78,7 +82,7 @@ namespace TCP_Testproject.Classes
 
         static public void PrintCommandHelp(string chatCommand, string currInstance)
         {
-            if (currInstance == Constants.InstanceClient)
+            if (currInstance == Constants.instanceServer)
             {
                 PrintHeader();
             }
@@ -119,7 +123,7 @@ namespace TCP_Testproject.Classes
                 PrintString("No help exists for the specified command!", Constants.alignmentLeft);
             }
 
-            if (currInstance == Constants.InstanceClient)
+            if (currInstance == Constants.instanceServer)
             {
                 PrintString("Press any key to return to chat!", Constants.alignmentCenter);
                 Console.ReadKey();
@@ -383,6 +387,13 @@ namespace TCP_Testproject.Classes
                     }
                     break;
             }
+        }
+
+        private static void drawBcHaxxOr()
+        {
+            Console.SetCursorPosition(0, 0);
+
+
         }
     }
 }

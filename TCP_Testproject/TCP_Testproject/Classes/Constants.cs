@@ -15,8 +15,8 @@ namespace TCP_Testproject.Classes
 
         // Name constants
         public const string serverUsername = "<Server>";
-        public const string InstanceClient = "ClientInstance";
-        public const string InstanceServer = "ServerInstance";
+        public const string instanceClient = "ClientInstance";
+        public const string instanceServer = "ServerInstance";
 
         // Color constants
         public const ConsoleColor consoleColorServerBcBlack = ConsoleColor.Red;

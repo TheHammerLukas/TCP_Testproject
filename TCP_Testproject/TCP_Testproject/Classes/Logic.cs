@@ -17,10 +17,11 @@ namespace TCP_Testproject.Classes
         public static Regex RegexIpAddress = new Regex(@"\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b"); // Regex to recognize IP addresses
         public static int scrollOffset = 0;
         public static string enteredMessage = String.Empty;
+        public static bool bcHaxxorActive = false;
 
         public static void InitClientServer()
         {
-            string _input = "";
+            string _input = String.Empty;
 
             Output.PrintScreen();
 
@@ -134,10 +135,10 @@ namespace TCP_Testproject.Classes
                 // Broadcast recieved message to all clients except the client that sent the information
                 bufferincmessage = encoder.GetString(message, 0, bytesRead);
 
-                switch (DetermineIsCommand(bufferincmessage.Substring(bufferincmessage.IndexOf(Constants.delimMsgData, 0) + Constants.delimMsgData.Length), Constants.InstanceClient))
+                switch (DetermineIsCommand(bufferincmessage.Substring(bufferincmessage.IndexOf(Constants.delimMsgData, 0) + Constants.delimMsgData.Length), Constants.instanceServer))
                 {
                     case true:
-                        WorkChatCommand(bufferincmessage.Substring(bufferincmessage.IndexOf(Constants.delimMsgData, 0) + Constants.delimMsgData.Length), Constants.InstanceServer);
+                        WorkChatCommand(bufferincmessage.Substring(bufferincmessage.IndexOf(Constants.delimMsgData, 0) + Constants.delimMsgData.Length), Constants.instanceServer);
                         break;
                     default:
                         byte[] buffer = encoder.GetBytes(bufferincmessage);
@@ -175,10 +176,10 @@ namespace TCP_Testproject.Classes
 
                 _userInput = Console.ReadLine();
 
-                switch (DetermineIsCommand(_userInput, Constants.InstanceServer))
+                switch (DetermineIsCommand(_userInput, Constants.instanceServer))
                 {
                     case true:
-                        WorkChatCommand(_userInput, Constants.InstanceServer);
+                        WorkChatCommand(_userInput, Constants.instanceServer);
                         break;
                     default:
                         byte[] buffer = encoder.GetBytes(Constants.delimAddData + GetTimestampString() + " | " + Constants.serverUsername +
@@ -335,10 +336,10 @@ namespace TCP_Testproject.Classes
 
                     enteredMessage = String.Empty;
 
-                    switch (DetermineIsCommand(_message, Constants.InstanceClient))
+                    switch (DetermineIsCommand(_message, Constants.instanceServer))
                     {
                         case true:
-                            WorkChatCommand(_message, Constants.InstanceClient);
+                            WorkChatCommand(_message, Constants.instanceServer);
                             break;
                         default:
                             // Translate the passed message into UTF-8 and store it as a Byte array.
@@ -417,7 +418,7 @@ namespace TCP_Testproject.Classes
                         // Handle commands received from server
                         if (addData == Constants.serverUsername && (message.IndexOf(Constants.chatCmdClearAll) == 0 || message.IndexOf(Constants.chatCmdClsAll) == 0))
                         {
-                            WorkChatCommand(message, Constants.InstanceClient);
+                            WorkChatCommand(message, Constants.instanceServer);
                         }
                         else
                         {
@@ -456,7 +457,7 @@ namespace TCP_Testproject.Classes
                 message.StartsWith(Constants.chatCmdClearAll) || message.StartsWith(Constants.chatCmdClsAll) ||
                 message.StartsWith(Constants.chatCmdNotificationBase) ||
                 message.StartsWith(Constants.chatCmdMatzesMom) || 
-                (currInstance == Constants.InstanceServer && message.StartsWith(Constants.chatCmdMuteBase))) 
+                (currInstance == Constants.instanceServer && message.StartsWith(Constants.chatCmdMuteBase))) 
             {
                 return true;
             }
@@ -491,7 +492,7 @@ namespace TCP_Testproject.Classes
             else if (chatCommand.StartsWith(Constants.chatCmdClearAll) ||
                      chatCommand.StartsWith(Constants.chatCmdClsAll))
             {
-                 if (currInstance == Constants.InstanceServer)
+                 if (currInstance == Constants.instanceServer)
                  {
                      UTF8Encoding encoder = new UTF8Encoding();
                      byte[] buffer = encoder.GetBytes(Constants.delimAddData + Constants.serverUsername + Constants.delimMsgData + "/clsall");
@@ -504,7 +505,7 @@ namespace TCP_Testproject.Classes
                          broadcastStream.FlushAsync();
                      }
                  }
-                 else if (currInstance == Constants.InstanceClient)
+                 else if (currInstance == Constants.instanceServer)
                  {
                      chatObjects.messageData.Clear();
                  }
@@ -544,7 +545,7 @@ namespace TCP_Testproject.Classes
             }
             else if (chatCommand.StartsWith(Constants.chatCmdMatzesMom))
             {
-                if (currInstance == Constants.InstanceServer)
+                if (currInstance == Constants.instanceServer)
                 {
                     Random random = new Random();
                     int cntRandom = random.Next(0, Objects.matzesMomJokes.Count);
@@ -560,7 +561,7 @@ namespace TCP_Testproject.Classes
                         broadcastStream.FlushAsync();
                     }
                 }
-                else if (currInstance == Constants.InstanceClient)
+                else if (currInstance == Constants.instanceServer)
                 {
                     // Get a client stream for reading and writing.
                     //  Stream stream = client.GetStream();
