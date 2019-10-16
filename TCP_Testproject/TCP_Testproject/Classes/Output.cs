@@ -54,7 +54,7 @@ namespace TCP_Testproject.Classes
 
         static public void PrintHelp(string currInstance)
         {
-            if (currInstance == Constants.instanceServer)
+            if (currInstance == Constants.instanceClient)
             {
                 PrintHeader();
             }
@@ -69,7 +69,7 @@ namespace TCP_Testproject.Classes
             PrintString(string.Concat(Constants.chatCmdMatzesMom, " = broadcasts a joke to all connected clients"), Constants.alignmentLeft);
             PrintString(string.Concat(Constants.chatCmdMuteBase, " = manage muted clients [Server Only]"), Constants.alignmentLeft);
             
-            if (currInstance == Constants.instanceServer)
+            if (currInstance == Constants.instanceClient)
             {
                 PrintString("Press any key to return to chat!", Constants.alignmentCenter);
                 Console.ReadKey();
@@ -78,7 +78,7 @@ namespace TCP_Testproject.Classes
 
         static public void PrintCommandHelp(string chatCommand, string currInstance)
         {
-            if (currInstance == Constants.instanceServer)
+            if (currInstance == Constants.instanceClient)
             {
                 PrintHeader();
             }
@@ -123,7 +123,7 @@ namespace TCP_Testproject.Classes
                 PrintString("No help exists for the specified command!", Constants.alignmentLeft);
             }
 
-            if (currInstance == Constants.instanceServer)
+            if (currInstance == Constants.instanceClient)
             {
                 PrintString("Press any key to return to chat!", Constants.alignmentCenter);
                 Console.ReadKey();

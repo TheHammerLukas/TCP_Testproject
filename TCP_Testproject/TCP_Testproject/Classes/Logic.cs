@@ -135,7 +135,7 @@ namespace TCP_Testproject.Classes
                 // Broadcast recieved message to all clients except the client that sent the information
                 bufferincmessage = encoder.GetString(message, 0, bytesRead);
 
-                switch (DetermineIsCommand(bufferincmessage.Substring(bufferincmessage.IndexOf(Constants.delimMsgData, 0) + Constants.delimMsgData.Length), Constants.instanceServer))
+                switch (DetermineIsCommand(bufferincmessage.Substring(bufferincmessage.IndexOf(Constants.delimMsgData, 0) + Constants.delimMsgData.Length), Constants.instanceClient))
                 {
                     case true:
                         WorkChatCommand(bufferincmessage.Substring(bufferincmessage.IndexOf(Constants.delimMsgData, 0) + Constants.delimMsgData.Length), Constants.instanceServer);
@@ -336,10 +336,10 @@ namespace TCP_Testproject.Classes
 
                     enteredMessage = String.Empty;
 
-                    switch (DetermineIsCommand(_message, Constants.instanceServer))
+                    switch (DetermineIsCommand(_message, Constants.instanceClient))
                     {
                         case true:
-                            WorkChatCommand(_message, Constants.instanceServer);
+                            WorkChatCommand(_message, Constants.instanceClient);
                             break;
                         default:
                             // Translate the passed message into UTF-8 and store it as a Byte array.
@@ -418,7 +418,7 @@ namespace TCP_Testproject.Classes
                         // Handle commands received from server
                         if (addData == Constants.serverUsername && (message.IndexOf(Constants.chatCmdClearAll) == 0 || message.IndexOf(Constants.chatCmdClsAll) == 0))
                         {
-                            WorkChatCommand(message, Constants.instanceServer);
+                            WorkChatCommand(message, Constants.instanceClient);
                         }
                         else
                         {
@@ -513,7 +513,7 @@ namespace TCP_Testproject.Classes
                          broadcastStream.FlushAsync();
                      }
                  }
-                 else if (currInstance == Constants.instanceServer)
+                 else if (currInstance == Constants.instanceClient)
                  {
                      chatObjects.messageData.Clear();
                  }
@@ -569,7 +569,7 @@ namespace TCP_Testproject.Classes
                         broadcastStream.FlushAsync();
                     }
                 }
-                else if (currInstance == Constants.instanceServer)
+                else if (currInstance == Constants.instanceClient)
                 {
                     // Get a client stream for reading and writing.
                     //  Stream stream = client.GetStream();
