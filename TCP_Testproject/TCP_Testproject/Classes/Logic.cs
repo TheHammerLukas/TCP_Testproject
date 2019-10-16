@@ -17,6 +17,7 @@ namespace TCP_Testproject.Classes
         public static Regex RegexIpAddress = new Regex(@"\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b"); // Regex to recognize IP addresses
         public static int scrollOffset = 0;
         public static string enteredMessage = String.Empty;
+        public static bool doPrintScreen = true;
         public static bool bcHaXxOrActive = false;
 
         public static void InitClientServer()
@@ -439,8 +440,11 @@ namespace TCP_Testproject.Classes
                         }
                     }
 
-                    // Print the screen
-                    Output.PrintScreen();
+                    if (doPrintScreen)
+                    {
+                        // Print the screen
+                        Output.PrintScreen();
+                    }
                 }
                 catch
                 {

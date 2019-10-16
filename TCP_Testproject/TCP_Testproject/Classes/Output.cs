@@ -56,6 +56,7 @@ namespace TCP_Testproject.Classes
         {
             if (currInstance == Constants.instanceClient)
             {
+                Logic.doPrintScreen = false;
                 PrintHeader();
             }
 
@@ -73,6 +74,7 @@ namespace TCP_Testproject.Classes
             {
                 PrintString("Press any key to return to chat!", Constants.alignmentCenter);
                 Console.ReadKey();
+                Logic.doPrintScreen = true;
             }
         }
 
@@ -80,6 +82,7 @@ namespace TCP_Testproject.Classes
         {
             if (currInstance == Constants.instanceClient)
             {
+                Logic.doPrintScreen = false;
                 PrintHeader();
             }
 
@@ -127,6 +130,7 @@ namespace TCP_Testproject.Classes
             {
                 PrintString("Press any key to return to chat!", Constants.alignmentCenter);
                 Console.ReadKey();
+                Logic.doPrintScreen = true;
             }
         }
 
