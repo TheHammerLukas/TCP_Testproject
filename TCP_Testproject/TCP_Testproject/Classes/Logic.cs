@@ -17,7 +17,7 @@ namespace TCP_Testproject.Classes
         public static Regex RegexIpAddress = new Regex(@"\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b"); // Regex to recognize IP addresses
         public static int scrollOffset = 0;
         public static string enteredMessage = String.Empty;
-        public static bool bcHaxxorActive = false;
+        public static bool bcHaXxOrActive = false;
 
         public static void InitClientServer()
         {
@@ -453,6 +453,7 @@ namespace TCP_Testproject.Classes
         {
             if (message.StartsWith(Constants.chatCmdHelp) || 
                 message.StartsWith(Constants.chatCmdBcBlack) || message.StartsWith(Constants.chatCmdBcWhite) ||
+                message.StartsWith(Constants.chatCmdBcHaXxOr) || 
                 message.Trim() == Constants.chatCmdClear || message.Trim() == Constants.chatCmdCls || 
                 message.StartsWith(Constants.chatCmdClearAll) || message.StartsWith(Constants.chatCmdClsAll) ||
                 message.StartsWith(Constants.chatCmdNotificationBase) ||
@@ -479,15 +480,22 @@ namespace TCP_Testproject.Classes
             }
             else if (chatCommand.StartsWith(Constants.chatCmdBcBlack))
             {
+                bcHaXxOrActive = false;
                 Console.BackgroundColor = ConsoleColor.Black;
                 Console.ForegroundColor = ConsoleColor.Gray;
                 Output.consoleColorServer = Constants.consoleColorServerBcBlack;
             }
             else if (chatCommand.StartsWith(Constants.chatCmdBcWhite))
             {
+                bcHaXxOrActive = false;
                 Console.BackgroundColor = ConsoleColor.White;
                 Console.ForegroundColor = ConsoleColor.Black;
                 Output.consoleColorServer = Constants.consoleColorServerBcWhite;
+            }
+            else if (chatCommand.StartsWith(Constants.chatCmdBcHaXxOr))
+            {
+                bcHaXxOrActive = true;
+                Output.consoleColorServer = Constants.consoleColorServerBcHaXxOr;
             }
             else if (chatCommand.StartsWith(Constants.chatCmdClearAll) ||
                      chatCommand.StartsWith(Constants.chatCmdClsAll))

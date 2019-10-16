@@ -9,12 +9,6 @@ namespace TCP_Testproject.Classes
 
         static public void PrintScreen()
         {
-            if (Logic.bcHaxxorActive)
-            {
-                drawBcHaxxOr();
-                Console.SetCursorPosition(0, 0);
-            }
-
             if (Logic.chatState == Constants.ProgramState.initializing)
             {
                 PrintHeader();
@@ -66,12 +60,14 @@ namespace TCP_Testproject.Classes
             }
 
             PrintString("Help Menu:", Constants.alignmentCenter);
-            PrintString("/bcblack = change to dark theme", Constants.alignmentLeft);
-            PrintString("/bcwhite = change to white theme", Constants.alignmentLeft);
-            PrintString("/clear or /cls = clear screen", Constants.alignmentLeft);
-            PrintString("/notification = manage notification settings", Constants.alignmentLeft);
-            PrintString("/matzesmom = broadcasts a joke to all connected clients", Constants.alignmentLeft);
-            PrintString("/mute = manage muted clients [Server Only]", Constants.alignmentLeft);
+            PrintString(string.Concat(Constants.chatCmdBcBlack, "  = change to dark theme"), Constants.alignmentLeft);
+            PrintString(string.Concat(Constants.chatCmdBcWhite, " = change to white theme"), Constants.alignmentLeft);
+            PrintString(string.Concat(Constants.chatCmdBcHaXxOr, " = change to hacker theme"), Constants.alignmentLeft);
+            PrintString(string.Concat(Constants.chatCmdClear, " | ", Constants.chatCmdCls, " = clear screen"), Constants.alignmentLeft);
+            PrintString(string.Concat(Constants.chatCmdClearAll, " | ", Constants.chatCmdClsAll, " = clear screen of all clients + server [Server Only]"), Constants.alignmentLeft);
+            PrintString(string.Concat(Constants.chatCmdNotificationBase, " = manage notification settings"), Constants.alignmentLeft);
+            PrintString(string.Concat(Constants.chatCmdMatzesMom, " = broadcasts a joke to all connected clients"), Constants.alignmentLeft);
+            PrintString(string.Concat(Constants.chatCmdMuteBase, " = manage muted clients [Server Only]"), Constants.alignmentLeft);
             
             if (currInstance == Constants.instanceServer)
             {
@@ -91,32 +87,36 @@ namespace TCP_Testproject.Classes
 
             if (chatCommand.StartsWith(Constants.chatCmdBcBlack))
             {
-                PrintString("/bcblack is used to switch to the dark theme", Constants.alignmentLeft);    
+                PrintString(string.Concat(Constants.chatCmdBcBlack, " is used to switch to the dark theme"), Constants.alignmentLeft);    
             }
             else if (chatCommand.StartsWith(Constants.chatCmdBcWhite))
             {
-                PrintString("/bcwhite is used to switch to the light theme", Constants.alignmentLeft);
+                PrintString(string.Concat(Constants.chatCmdBcWhite, " is used to switch to the light theme"), Constants.alignmentLeft);
+            }
+            else if (chatCommand.StartsWith(Constants.chatCmdBcHaXxOr))
+            {
+                PrintString(string.Concat(Constants.chatCmdBcHaXxOr, " is used to switch to the hacker theme"), Constants.alignmentLeft);
             }
             else if (chatCommand.StartsWith(Constants.chatCmdClear) || chatCommand.StartsWith(Constants.chatCmdCls))
             {
-                PrintString("/clear or /cls deletes all previous messages and clears the chat for the invoking user", Constants.alignmentLeft);
+                PrintString(string.Concat(Constants.chatCmdClear, " | ", Constants.chatCmdCls, " deletes all messages and clears the chat for the invoking user"), Constants.alignmentLeft);
             }
             else if (chatCommand.StartsWith(Constants.chatCmdClearAll) || chatCommand.StartsWith(Constants.chatCmdClsAll))
             {
-                PrintString("/clear or /cls deletes all previous messages and clears the chat for all clients + the server", Constants.alignmentLeft);
+                PrintString(string.Concat(Constants.chatCmdClearAll, " | ", Constants.chatCmdClsAll, " deletes all messages and clears the chat of all clients + server"), Constants.alignmentLeft);
                 PrintString("this command can only be invoked by the server and not by a client", Constants.alignmentLeft);
             }
             else if (chatCommand.StartsWith(Constants.chatCmdNotificationBase))
             {
-                PrintString("/notification is used to display the current notification settings", Constants.alignmentLeft);
-                PrintString("-s is used to toggle the sound notification 'on' or 'off'", Constants.alignmentLeft);
-                PrintString("-v is used to toggle the visual notification 'on' or 'off'", Constants.alignmentLeft);
+                PrintString(string.Concat(Constants.chatCmdNotificationBase, " is used to display the current notification settings"), Constants.alignmentLeft);
+                PrintString(string.Concat(Constants.chatCmdNotificationSound, " is used to toggle the sound notification 'on' or 'off'"), Constants.alignmentLeft);
+                PrintString(string.Concat(Constants.chatCmdNotificationVisual, " is used to toggle the visual notification 'on' or 'off'"), Constants.alignmentLeft);
             }
             else if (chatCommand.StartsWith(Constants.chatCmdMuteBase))
             {
-                PrintString("/mute is used to display all currently muted ip adresses", Constants.alignmentLeft);
-                PrintString("-a is used to add ips (multiple ips can be specified at once) to the mute list", Constants.alignmentLeft);
-                PrintString("-r is used to remove ips (multiple ips can be specified at once) from the mute list", Constants.alignmentLeft);
+                PrintString(string.Concat(Constants.chatCmdMuteBase, " is used to display all currently muted ip adresses"), Constants.alignmentLeft);
+                PrintString(string.Concat(Constants.chatCmdMuteAdd, " is used to add ips (multiple ips can be specified at once) to the mute list"), Constants.alignmentLeft);
+                PrintString(string.Concat(Constants.chatCmdMuteRemove, " is used to remove ips (multiple ips can be specified at once) from the mute list"), Constants.alignmentLeft);
             }
             else
             {
@@ -133,6 +133,11 @@ namespace TCP_Testproject.Classes
         static private void PrintHeader()
         {
             Console.Clear();
+
+            if (Logic.bcHaXxOrActive)
+            {
+                drawBcHaxxOr();
+            }
 
             string textHeader = "TCP-IP Chat";
 
@@ -391,9 +396,55 @@ namespace TCP_Testproject.Classes
 
         private static void drawBcHaxxOr()
         {
+            Random random = new Random();
+
+            // Prepare the background
+            Console.ForegroundColor = ConsoleColor.DarkGreen;
+            Console.BackgroundColor = ConsoleColor.Black;
+            Console.Clear();
             Console.SetCursorPosition(0, 0);
 
+            // Buffer one line of the background and then print it
+            for (int y = 0; y < Console.WindowHeight; y++)
+            {
+                for (int x = 0; x < Console.WindowWidth - 1; x++)
+                {
+                    
+                    if (random.Next(0, 3) < 2)
+                    {
+                        if (random.Next(0, 100) == 0)
+                        {
+                            // Add some acctens
+                            Console.ForegroundColor = ConsoleColor.Green;
+                            Console.BackgroundColor = ConsoleColor.DarkGreen;
+                            // Print
+                            Console.Write(random.Next(0, 2).ToString());
+                            // Reset the color 
+                            Console.ForegroundColor = ConsoleColor.DarkGreen;
+                            Console.BackgroundColor = ConsoleColor.Black;
+                        }
+                        else
+                        {
+                            // Print
+                            Console.Write(random.Next(0, 2).ToString());
+                        }
+                    }
+                    else
+                    {
+                        // Add some accents
+                        Console.Write(' ');
+                    }
+                    if (x == Console.WindowWidth - 2)
+                    {
+                        Console.WriteLine();
+                    }
+                }
+            }
 
+            // Prepare for normal printing
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.BackgroundColor = ConsoleColor.Black;
+            Console.SetCursorPosition(0, 0);
         }
     }
 }

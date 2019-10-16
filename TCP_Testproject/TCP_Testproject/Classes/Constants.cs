@@ -21,6 +21,7 @@ namespace TCP_Testproject.Classes
         // Color constants
         public const ConsoleColor consoleColorServerBcBlack = ConsoleColor.Red;
         public const ConsoleColor consoleColorServerBcWhite = ConsoleColor.Blue;
+        public const ConsoleColor consoleColorServerBcHaXxOr = ConsoleColor.White;
 
         // Program state constants
         public enum ProgramState
@@ -44,6 +45,7 @@ namespace TCP_Testproject.Classes
         public const string chatCmdCommandHelp = "?";
         public const string chatCmdBcBlack = "/bcblack";
         public const string chatCmdBcWhite = "/bcwhite";
+        public const string chatCmdBcHaXxOr = "/bcHaXxOr";
         public const string chatCmdClear = "/clear";
         public const string chatCmdCls = "/cls";
         public const string chatCmdClearAll = "/clearall";
