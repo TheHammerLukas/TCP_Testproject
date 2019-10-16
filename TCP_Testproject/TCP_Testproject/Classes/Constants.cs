@@ -35,6 +35,9 @@ namespace TCP_Testproject.Classes
             exit
         };
 
+        // Text constants
+        public const string txtClientUsrNameEQ = " Connected client username=";
+
         // Text alignment constants
         public const string alignmentLeft = "alignLeft";
         public const string alignmentCenter = "alignCenter";

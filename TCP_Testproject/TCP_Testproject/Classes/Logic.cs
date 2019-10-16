@@ -115,10 +115,18 @@ namespace TCP_Testproject.Classes
                 {
                     //blocks until a client sends a message
                     bytesRead = clientStream.Read(message, 0, 4096);
-                    Console.WriteLine("{0} Received from ip=\"{1}\" string=\"{2}\"",
-                                      GetTimestampString(),
-                                      ((IPEndPoint)tcpClient.Client.RemoteEndPoint).Address.ToString(),
-                                      encoder.GetString(message, 0, bytesRead));
+
+                    if (encoder.GetString(message, 0, bytesRead).StartsWith(GetTimestampString() + Constants.txtClientUsrNameEQ))
+                    {
+                        Console.WriteLine(encoder.GetString(message, 0, bytesRead)); 
+                    }
+                    else
+                    {
+                        Console.WriteLine("{0} Received from ip=\"{1}\" string=\"{2}\"",
+                                          GetTimestampString(),
+                                          ((IPEndPoint)tcpClient.Client.RemoteEndPoint).Address.ToString(),
+                                          encoder.GetString(message, 0, bytesRead));
+                    }
                 }
                 catch
                 {
@@ -195,7 +203,8 @@ namespace TCP_Testproject.Classes
                             broadcastStream.WriteAsync(buffer, 0, buffer.Length);
                             broadcastStream.FlushAsync();
 
-                            Console.WriteLine("Sent to ip=\"{0}\" string=\"{1}\"",
+                            Console.WriteLine("{0} Sent to ip=\"{1}\" string=\"{2}\"",
+                                              GetTimestampString(),
                                               ((IPEndPoint)broadcastMember.Client.RemoteEndPoint).Address.ToString(),
                                               encoder.GetString(buffer));
                         }
@@ -259,6 +268,17 @@ namespace TCP_Testproject.Classes
 
             chatState = Constants.ProgramState.connected;
             Output.PrintScreen();
+
+            // Get a client stream for reading and writing.
+            //  Stream stream = client.GetStream();
+            NetworkStream stream = chatObjects.client.GetStream();
+
+            // Translate the passed message into UTF-8 and store it as a Byte array.
+            Byte[] data = System.Text.Encoding.UTF8.GetBytes(GetTimestampString() + Constants.txtClientUsrNameEQ + chatObjects.clientName);
+
+            // Send the message to the connected TcpServer. 
+            stream.WriteAsync(data, 0, data.Length);
+
             Thread.Sleep(2000);
 
             ThreadPool.QueueUserWorkItem(ClientListen, chatObjects.client);
