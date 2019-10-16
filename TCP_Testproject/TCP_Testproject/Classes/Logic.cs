@@ -74,7 +74,7 @@ namespace TCP_Testproject.Classes
 
                     ThreadPool.QueueUserWorkItem(ServerListenSend, client);
 
-                    Console.WriteLine("Connection accepted ip=\"{0}\"", ((IPEndPoint)client.Client.RemoteEndPoint).Address.ToString());
+                    Console.WriteLine("{0} Connection accepted ip=\"{1}\"", GetTimestampString(), ((IPEndPoint)client.Client.RemoteEndPoint).Address.ToString());
                 }
             }
             catch (SocketException e)
@@ -115,14 +115,15 @@ namespace TCP_Testproject.Classes
                 {
                     //blocks until a client sends a message
                     bytesRead = clientStream.Read(message, 0, 4096);
-                    Console.WriteLine("Received from ip=\"{0}\" string=\"{1}\"", 
+                    Console.WriteLine("{0} Received from ip=\"{1}\" string=\"{2}\"",
+                                      GetTimestampString(),
                                       ((IPEndPoint)tcpClient.Client.RemoteEndPoint).Address.ToString(),
                                       encoder.GetString(message, 0, bytesRead));
                 }
                 catch
                 {
                     //a socket error has occured
-                    Console.WriteLine("Connection disconnect ip=\"{0}\"", ((IPEndPoint)tcpClient.Client.RemoteEndPoint).Address.ToString());
+                    Console.WriteLine("{0} Connection disconnect ip=\"{1}\"", GetTimestampString(), ((IPEndPoint)tcpClient.Client.RemoteEndPoint).Address.ToString());
                     break;
                 }
 
@@ -151,7 +152,8 @@ namespace TCP_Testproject.Classes
                                 NetworkStream broadcastStream = broadcastMember.GetStream();
 
                                 broadcastStream.Write(buffer, 0, buffer.Length);
-                                Console.WriteLine("Sent to ip=\"{0}\" string=\"{1}\"",
+                                Console.WriteLine("{0} Sent to ip=\"{1}\" string=\"{2}\"",
+                                                  GetTimestampString(),
                                                   ((IPEndPoint)broadcastMember.Client.RemoteEndPoint).Address.ToString(),
                                                   bufferincmessage);
                             }
