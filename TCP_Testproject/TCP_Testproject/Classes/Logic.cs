@@ -454,6 +454,7 @@ namespace TCP_Testproject.Classes
                         if (receivedMessage.StartsWith(Constants.delimOnlineData) && waitForOnlineData)
                         {
                             waitForOnlineData = false;
+                            // Call the PrintOnlineList in a new thread so new messages can still be received + notifications still work
                             new Thread(() => Output.PrintOnlineList(Constants.instanceClient, receivedMessage)).Start();
                         }
                         else
@@ -634,9 +635,9 @@ namespace TCP_Testproject.Classes
                 }
                 else if (currInstance == Constants.instanceClient)
                 {
-                    allowInput = false;
-                    doPrintScreen = false;
-                    waitForOnlineData = true;
+                    allowInput = false; // Do not allow any input while online information is displayed
+                    doPrintScreen = false; // Do not print while online information is being displayed
+                    waitForOnlineData = true; // Tell the invoking client that it is now listening for online data
                     // Get a client stream for reading and writing.
                     //  Stream stream = client.GetStream();
                     NetworkStream stream = chatObjects.client.GetStream();
