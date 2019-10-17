@@ -20,7 +20,7 @@ namespace TCP_Testproject.Classes
         public static bool doPrintScreen = true; // To disable the PrintScreen for the client if necessary
         public static bool allowInput = true; // To disable the input for the client if necessary
         public static bool waitForOnlineData = false; // Determines whether a specific client is waiting to receive online data or not
-        public static bool bcHaXxOrActive = false;
+        public static Constants.bcHaXxOrType bcHaXxOrMode = Constants.bcHaXxOrType.Disabled;
 
         public static void InitClientServer()
         {
@@ -506,7 +506,7 @@ namespace TCP_Testproject.Classes
         {
             if (message.StartsWith(Constants.chatCmdHelp) || 
                 message.StartsWith(Constants.chatCmdBcBlack) || message.StartsWith(Constants.chatCmdBcWhite) ||
-                message.StartsWith(Constants.chatCmdBcHaXxOr) || 
+                message.StartsWith(Constants.chatCmdBcHaXxOr) || message.StartsWith(Constants.chatCmdBcHaXxOrWhite) || 
                 message.Trim() == Constants.chatCmdClear || message.Trim() == Constants.chatCmdCls || 
                 message.StartsWith(Constants.chatCmdClearAll) || message.StartsWith(Constants.chatCmdClsAll) ||
                 message.StartsWith(Constants.chatCmdNotificationBase) ||
@@ -534,21 +534,26 @@ namespace TCP_Testproject.Classes
             }
             else if (chatCommand.StartsWith(Constants.chatCmdBcBlack))
             {
-                bcHaXxOrActive = false;
+                bcHaXxOrMode = Constants.bcHaXxOrType.Disabled;
                 Console.BackgroundColor = ConsoleColor.Black;
                 Console.ForegroundColor = ConsoleColor.Gray;
                 Output.consoleColorServer = Constants.consoleColorServerBcBlack;
             }
             else if (chatCommand.StartsWith(Constants.chatCmdBcWhite))
             {
-                bcHaXxOrActive = false;
+                bcHaXxOrMode = Constants.bcHaXxOrType.Disabled;
                 Console.BackgroundColor = ConsoleColor.White;
                 Console.ForegroundColor = ConsoleColor.Black;
                 Output.consoleColorServer = Constants.consoleColorServerBcWhite;
             }
+            else if (chatCommand.StartsWith(Constants.chatCmdBcHaXxOrWhite))
+            {
+                bcHaXxOrMode = Constants.bcHaXxOrType.HaXxOrWhite;
+                Output.consoleColorServer = Constants.consoleColorServerBcHaXxOrWhite;
+            }
             else if (chatCommand.StartsWith(Constants.chatCmdBcHaXxOr))
             {
-                bcHaXxOrActive = true;
+                bcHaXxOrMode = Constants.bcHaXxOrType.HaXxOr;
                 Output.consoleColorServer = Constants.consoleColorServerBcHaXxOr;
             }
             else if (chatCommand.StartsWith(Constants.chatCmdClearAll) ||

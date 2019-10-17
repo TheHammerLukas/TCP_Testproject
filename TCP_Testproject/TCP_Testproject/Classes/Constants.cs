@@ -24,6 +24,7 @@ namespace TCP_Testproject.Classes
         public const ConsoleColor consoleColorServerBcBlack = ConsoleColor.Red;
         public const ConsoleColor consoleColorServerBcWhite = ConsoleColor.Blue;
         public const ConsoleColor consoleColorServerBcHaXxOr = ConsoleColor.White;
+        public const ConsoleColor consoleColorServerBcHaXxOrWhite = ConsoleColor.Magenta;
 
         // Program state constants
         public enum ProgramState
@@ -45,12 +46,21 @@ namespace TCP_Testproject.Classes
         public const string alignmentCenter = "alignCenter";
         public const string alignmentRight = "alignRight";
 
+        // Types
+        public enum bcHaXxOrType
+        {
+            Disabled,
+            HaXxOr,
+            HaXxOrWhite
+        };
+
         // Chat command constants
         public const string chatCmdHelp = "/help";
         public const string chatCmdCommandHelp = "?";
         public const string chatCmdBcBlack = "/bcblack";
         public const string chatCmdBcWhite = "/bcwhite";
         public const string chatCmdBcHaXxOr = "/bcHaXxOr";
+        public const string chatCmdBcHaXxOrWhite = "/bcHaXxOrWhite";
         public const string chatCmdClear = "/clear";
         public const string chatCmdCls = "/cls";
         public const string chatCmdClearAll = "/clearall";

@@ -103,6 +103,7 @@ namespace TCP_Testproject.Classes
             PrintString(string.Concat(Constants.chatCmdBcBlack, "  = change to dark theme"), Constants.alignmentLeft);
             PrintString(string.Concat(Constants.chatCmdBcWhite, " = change to white theme"), Constants.alignmentLeft);
             PrintString(string.Concat(Constants.chatCmdBcHaXxOr, " = change to hacker theme"), Constants.alignmentLeft);
+            PrintString(string.Concat(Constants.chatCmdBcHaXxOrWhite, " = change to white hacker theme"), Constants.alignmentLeft);
             PrintString(string.Concat(Constants.chatCmdClear, " | ", Constants.chatCmdCls, " = clear screen"), Constants.alignmentLeft);
             PrintString(string.Concat(Constants.chatCmdClearAll, " | ", Constants.chatCmdClsAll, " = clear screen of all clients + server [Server Only]"), Constants.alignmentLeft);
             PrintString(string.Concat(Constants.chatCmdNotificationBase, " = manage notification settings"), Constants.alignmentLeft);
@@ -135,6 +136,10 @@ namespace TCP_Testproject.Classes
             else if (chatCommand.StartsWith(Constants.chatCmdBcWhite))
             {
                 PrintString(string.Concat(Constants.chatCmdBcWhite, " is used to switch to the light theme"), Constants.alignmentLeft);
+            }
+            else if (chatCommand.StartsWith(Constants.chatCmdBcHaXxOr))
+            {
+                PrintString(string.Concat(Constants.chatCmdBcHaXxOrWhite, " is used to switch to the light hacker theme"), Constants.alignmentLeft);
             }
             else if (chatCommand.StartsWith(Constants.chatCmdBcHaXxOr))
             {
@@ -182,9 +187,16 @@ namespace TCP_Testproject.Classes
         {
             Console.Clear();
 
-            if (Logic.bcHaXxOrActive)
+            switch (Logic.bcHaXxOrMode)
             {
-                drawBcHaxxOr();
+                case Constants.bcHaXxOrType.HaXxOr:
+                    drawBcHaxxOr();
+                    break;
+                case Constants.bcHaXxOrType.HaXxOrWhite:
+                    drawBcHaxxOrWhite();
+                    break;
+                default:
+                    break;
             }
 
             string textHeader = "TCP-IP Chat";
@@ -492,6 +504,59 @@ namespace TCP_Testproject.Classes
             // Prepare for normal printing
             Console.ForegroundColor = ConsoleColor.Green;
             Console.BackgroundColor = ConsoleColor.Black;
+            Console.SetCursorPosition(0, 0);
+        }
+
+        private static void drawBcHaxxOrWhite()
+        {
+            Random random = new Random();
+
+            // Prepare the background
+            Console.ForegroundColor = ConsoleColor.Gray;
+            Console.BackgroundColor = ConsoleColor.White;
+            Console.Clear();
+            Console.SetCursorPosition(0, 0);
+
+            // Buffer one line of the background and then print it
+            for (int y = 0; y < Console.WindowHeight; y++)
+            {
+                for (int x = 0; x < Console.WindowWidth - 1; x++)
+                {
+
+                    if (random.Next(0, 3) < 2)
+                    {
+                        if (random.Next(0, 100) == 0)
+                        {
+                            // Add some acctens
+                            Console.ForegroundColor = ConsoleColor.DarkGray;
+                            Console.BackgroundColor = ConsoleColor.Gray;
+                            // Print
+                            Console.Write((char)random.Next(65, 123));
+                            // Reset the color 
+                            Console.ForegroundColor = ConsoleColor.Gray;
+                            Console.BackgroundColor = ConsoleColor.White;
+                        }
+                        else
+                        {
+                            // Print
+                            Console.Write((char)random.Next(65, 123));
+                        }
+                    }
+                    else
+                    {
+                        // Add some accents
+                        Console.Write(' ');
+                    }
+                    if (x == Console.WindowWidth - 2)
+                    {
+                        Console.WriteLine();
+                    }
+                }
+            }
+
+            // Prepare for normal printing
+            Console.ForegroundColor = ConsoleColor.Black;
+            Console.BackgroundColor = ConsoleColor.White;
             Console.SetCursorPosition(0, 0);
         }
     }
