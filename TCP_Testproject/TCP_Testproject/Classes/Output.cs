@@ -76,7 +76,7 @@ namespace TCP_Testproject.Classes
 
                     foreach (string segment in receivedData)
                     {
-                        PrintString(segment, Constants.alignmentCenter);
+                        PrintString(segment, Constants.alignmentLeft);
                     }
 
                     if (currInstance == Constants.instanceClient)

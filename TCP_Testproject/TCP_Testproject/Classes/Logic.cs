@@ -541,6 +541,7 @@ namespace TCP_Testproject.Classes
             }
             else if (chatCommand.StartsWith(Constants.chatCmdBcWhite))
             {
+                Console.Clear();
                 bcHaXxOrMode = Constants.bcHaXxOrType.Disabled;
                 Console.BackgroundColor = ConsoleColor.White;
                 Console.ForegroundColor = ConsoleColor.Black;
@@ -548,6 +549,7 @@ namespace TCP_Testproject.Classes
             }
             else if (chatCommand.StartsWith(Constants.chatCmdBcHaXxOrWhite))
             {
+                Console.Clear();
                 bcHaXxOrMode = Constants.bcHaXxOrType.HaXxOrWhite;
                 Output.consoleColorServer = Constants.consoleColorServerBcHaXxOrWhite;
             }
@@ -620,7 +622,7 @@ namespace TCP_Testproject.Classes
                     // Build the data string
                     foreach (Objects.onlineListElement connectedClient in Objects.onlineList)
                     {
-                        _onlineDataString += Constants.delimOnlineData + "IP: " + connectedClient.IP + " Username: " + connectedClient.Username;
+                        _onlineDataString += Constants.delimOnlineData + "IP: " + connectedClient.IP.PadRight(15) + " | Username: " + connectedClient.Username;
                     }
                     // Print server output already so it isn't necessary to remove the delimMsgEnd for the servers output 
                     Output.PrintOnlineList(Constants.instanceServer, _onlineDataString);
