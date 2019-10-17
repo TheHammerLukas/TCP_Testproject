@@ -57,6 +57,7 @@ namespace TCP_Testproject.Classes
         {
             // try to print; only print when not currently printing already
             bool _cycleIsPrinting;
+            Logic.doPrintScreen = false;
 
             do
             {
@@ -65,7 +66,6 @@ namespace TCP_Testproject.Classes
                 {
                     if (currInstance == Constants.instanceClient)
                     {
-                        Logic.doPrintScreen = false;
                         PrintHeader();
                     }
 
@@ -84,7 +84,9 @@ namespace TCP_Testproject.Classes
                     {
                         PrintString("Press any key to return to chat!", Constants.alignmentCenter);
                         Console.ReadKey();
+                        Logic.allowInput = true;
                         Logic.doPrintScreen = true;
+                        PrintScreen();
                     }
                 }
             } while (_cycleIsPrinting);

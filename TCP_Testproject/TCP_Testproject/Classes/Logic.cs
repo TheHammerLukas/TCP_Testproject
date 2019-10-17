@@ -383,7 +383,7 @@ namespace TCP_Testproject.Classes
                             default:
                                 // Translate the passed message into UTF-8 and store it as a Byte array.
                                 Byte[] data = System.Text.Encoding.UTF8.GetBytes(Constants.delimAddData + GetTimestampString() + " | " + chatObjects.clientName +
-                                                                                 Constants.delimMsgData + _message + Constants.delimMsgEnd);
+                                                                                    Constants.delimMsgData + _message + Constants.delimMsgEnd);
 
                                 // Send the message to the connected TcpServer. 
                                 stream.WriteAsync(data, 0, data.Length);
@@ -391,9 +391,10 @@ namespace TCP_Testproject.Classes
 
                                 chatObjects.messageData.Add(new Message("You | " + GetTimestampString(), _message, Constants.alignmentRight));
                                 break;
+
                         }
 
-                        if (!_message.StartsWith(Constants.chatCmdMatzesMom))
+                        if (!_message.StartsWith(Constants.chatCmdMatzesMom) && !_message.StartsWith(Constants.chatCmdOnlineList))
                         {
                             // Print the screen
                             Output.PrintScreen();
@@ -452,10 +453,8 @@ namespace TCP_Testproject.Classes
                     {
                         if (receivedMessage.StartsWith(Constants.delimOnlineData) && waitForOnlineData)
                         {
-                            allowInput = false;
                             waitForOnlineData = false;
-                            Output.PrintOnlineList(Constants.instanceClient, receivedMessage);
-                            allowInput = true;
+                            new Thread(() => Output.PrintOnlineList(Constants.instanceClient, receivedMessage)).Start();
                         }
                         else
                         {
@@ -635,6 +634,7 @@ namespace TCP_Testproject.Classes
                 }
                 else if (currInstance == Constants.instanceClient)
                 {
+                    allowInput = false;
                     waitForOnlineData = true;
                     // Get a client stream for reading and writing.
                     //  Stream stream = client.GetStream();
