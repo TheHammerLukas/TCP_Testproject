@@ -185,8 +185,6 @@ namespace TCP_Testproject.Classes
 
         static private void PrintHeader()
         {
-            Console.Clear();
-
             switch (Logic.bcHaXxOrMode)
             {
                 case Constants.bcHaXxOrType.HaXxOr:
@@ -196,6 +194,7 @@ namespace TCP_Testproject.Classes
                     drawBcHaxxOrWhite();
                     break;
                 default:
+                    Console.Clear();
                     break;
             }
 
@@ -461,7 +460,6 @@ namespace TCP_Testproject.Classes
             // Prepare the background
             Console.ForegroundColor = ConsoleColor.DarkGreen;
             Console.BackgroundColor = ConsoleColor.Black;
-            Console.Clear();
             Console.SetCursorPosition(0, 0);
 
             // Buffer one line of the background and then print it
@@ -514,7 +512,6 @@ namespace TCP_Testproject.Classes
             // Prepare the background
             Console.ForegroundColor = ConsoleColor.Gray;
             Console.BackgroundColor = ConsoleColor.White;
-            Console.Clear();
             Console.SetCursorPosition(0, 0);
 
             // Buffer one line of the background and then print it
