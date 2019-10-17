@@ -57,7 +57,6 @@ namespace TCP_Testproject.Classes
         {
             // try to print; only print when not currently printing already
             bool _cycleIsPrinting;
-            Logic.doPrintScreen = false;
 
             do
             {

@@ -635,6 +635,7 @@ namespace TCP_Testproject.Classes
                 else if (currInstance == Constants.instanceClient)
                 {
                     allowInput = false;
+                    doPrintScreen = false;
                     waitForOnlineData = true;
                     // Get a client stream for reading and writing.
                     //  Stream stream = client.GetStream();
