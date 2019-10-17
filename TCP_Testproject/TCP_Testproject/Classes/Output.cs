@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace TCP_Testproject.Classes
 {
@@ -52,6 +53,43 @@ namespace TCP_Testproject.Classes
             }
         }
 
+        static public void PrintOnlineList(string currInstance, string onlineData)
+        {
+            // try to print; only print when not currently printing already
+            bool _cycleIsPrinting;
+
+            do
+            {
+                _cycleIsPrinting = isPrinting;
+                if (!_cycleIsPrinting)
+                {
+                    if (currInstance == Constants.instanceClient)
+                    {
+                        Logic.doPrintScreen = false;
+                        PrintHeader();
+                    }
+
+                    PrintString("Online List:", Constants.alignmentCenter);
+
+                    // Split up the data
+                    List<string> receivedData = new List<string>();
+                    receivedData.AddRange(onlineData.Split(new string[] { Constants.delimOnlineData }, StringSplitOptions.RemoveEmptyEntries));
+
+                    foreach (string segment in receivedData)
+                    {
+                        PrintString(segment, Constants.alignmentCenter);
+                    }
+
+                    if (currInstance == Constants.instanceClient)
+                    {
+                        PrintString("Press any key to return to chat!", Constants.alignmentCenter);
+                        Console.ReadKey();
+                        Logic.doPrintScreen = true;
+                    }
+                }
+            } while (_cycleIsPrinting);
+        }
+
         static public void PrintHelp(string currInstance)
         {
             if (currInstance == Constants.instanceClient)
@@ -67,6 +105,7 @@ namespace TCP_Testproject.Classes
             PrintString(string.Concat(Constants.chatCmdClear, " | ", Constants.chatCmdCls, " = clear screen"), Constants.alignmentLeft);
             PrintString(string.Concat(Constants.chatCmdClearAll, " | ", Constants.chatCmdClsAll, " = clear screen of all clients + server [Server Only]"), Constants.alignmentLeft);
             PrintString(string.Concat(Constants.chatCmdNotificationBase, " = manage notification settings"), Constants.alignmentLeft);
+            PrintString(string.Concat(Constants.chatCmdOnlineList, " = display online users"), Constants.alignmentLeft);
             PrintString(string.Concat(Constants.chatCmdMatzesMom, " = broadcasts a joke to all connected clients"), Constants.alignmentLeft);
             PrintString(string.Concat(Constants.chatCmdMuteBase, " = manage muted clients [Server Only]"), Constants.alignmentLeft);
             
@@ -114,6 +153,10 @@ namespace TCP_Testproject.Classes
                 PrintString(string.Concat(Constants.chatCmdNotificationBase, " is used to display the current notification settings"), Constants.alignmentLeft);
                 PrintString(string.Concat(Constants.chatCmdNotificationSound, " is used to toggle the sound notification 'on' or 'off'"), Constants.alignmentLeft);
                 PrintString(string.Concat(Constants.chatCmdNotificationVisual, " is used to toggle the visual notification 'on' or 'off'"), Constants.alignmentLeft);
+            }
+            else if (chatCommand.StartsWith(Constants.chatCmdOnlineList))
+            {
+                PrintString(string.Concat(Constants.chatCmdOnlineList, " is used to display all currently online users"), Constants.alignmentLeft);
             }
             else if (chatCommand.StartsWith(Constants.chatCmdMuteBase))
             {

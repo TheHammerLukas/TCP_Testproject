@@ -12,6 +12,8 @@ namespace TCP_Testproject.Classes
         public const string delimMsgEnd = "~#MSGEND~";
         public const string delimAddData = "~#ADDDATA~";
         public const string delimMsgData = "~#MSGDATA~";
+        public const string delimUsrData = "~#USRDATA~";
+        public const string delimOnlineData = "~#ONLINEDATA~";
 
         // Name constants
         public const string serverUsername = "<Server>";
@@ -56,6 +58,7 @@ namespace TCP_Testproject.Classes
         public const string chatCmdNotificationBase = "/notification";
         public const string chatCmdNotificationSound = "-s";
         public const string chatCmdNotificationVisual = "-v";
+        public const string chatCmdOnlineList = "/onlinelist";
         public const string chatCmdMatzesMom = "/matzesmom";
         public const string chatCmdMuteBase = "/mute";
         public const string chatCmdMuteAdd = "-a";
