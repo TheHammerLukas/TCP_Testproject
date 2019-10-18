@@ -460,6 +460,7 @@ namespace TCP_Testproject.Classes
             // Prepare the background
             Console.ForegroundColor = ConsoleColor.DarkGreen;
             Console.BackgroundColor = ConsoleColor.Black;
+            Console.Clear();
             Console.SetCursorPosition(0, 0);
 
             // Buffer one line of the background and then print it
@@ -512,6 +513,7 @@ namespace TCP_Testproject.Classes
             // Prepare the background
             Console.ForegroundColor = ConsoleColor.Gray;
             Console.BackgroundColor = ConsoleColor.White;
+            Console.Clear();
             Console.SetCursorPosition(0, 0);
 
             // Buffer one line of the background and then print it
