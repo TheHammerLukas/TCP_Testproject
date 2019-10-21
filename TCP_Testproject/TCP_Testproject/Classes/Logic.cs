@@ -231,15 +231,15 @@ namespace TCP_Testproject.Classes
         {
             string _desiredUsername = String.Empty;
 
-            // Only accept the users desired username if it doesn't immitate the server username
+            // Only accept the users desired username if it doesn't start with any forbidden string
             do
             {
                 _desiredUsername = String.Empty;
 
                 Output.PrintScreen();
                 _desiredUsername = Console.ReadLine();
-            } while (_desiredUsername == Constants.serverUsername || _desiredUsername == Constants.delimAddData ||
-                     _desiredUsername == Constants.delimMsgData || _desiredUsername == Constants.delimMsgEnd);
+            } while (_desiredUsername.StartsWith(Constants.serverUsername) || _desiredUsername.StartsWith(Constants.delimAddData) ||
+                     _desiredUsername.StartsWith(Constants.delimMsgData) || _desiredUsername.StartsWith(Constants.delimMsgEnd));
 
             chatObjects.clientName = _desiredUsername;
 
