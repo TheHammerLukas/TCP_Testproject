@@ -288,9 +288,10 @@ namespace TCP_Testproject.Classes
             NetworkStream stream = chatObjects.client.GetStream();
 
             // Translate the passed message into UTF-8 and store it as a Byte array.
+            // Build logon message for the new client.
             Byte[] data = System.Text.Encoding.UTF8.GetBytes(Constants.delimOnlineData + GetTimestampString() + Constants.txtClientUsrNameEQ + chatObjects.clientName);
 
-            // Send the message to the connected TcpServer. 
+            // Send the logon message to the connected TcpServer. 
             stream.WriteAsync(data, 0, data.Length);
 
             Thread.Sleep(2000);
