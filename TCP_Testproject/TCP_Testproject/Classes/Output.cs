@@ -185,6 +185,7 @@ namespace TCP_Testproject.Classes
 
         static private void PrintHeader()
         {
+            // Draw background colors that have to be handled like this; These have to be drawn before anything else;
             switch (Logic.bcHaXxOrMode)
             {
                 case Constants.bcHaXxOrType.HaXxOr:
@@ -381,7 +382,7 @@ namespace TCP_Testproject.Classes
                 _outputString = Logic.chatObjects.messageData[i].message;
                 _textAlignment = Logic.chatObjects.messageData[i].alignment;
 
-                // Only display the username if it is a message that has been received from the server
+                // Display additional info according to the text alignment
                 if (_textAlignment == Constants.alignmentLeft)
                 {
                     _outputString = Logic.chatObjects.messageData[i].additionalInfo + ": " + _outputString;

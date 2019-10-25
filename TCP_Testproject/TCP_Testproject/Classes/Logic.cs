@@ -154,7 +154,7 @@ namespace TCP_Testproject.Classes
 
                 if (_doWorkMsg)
                 {
-                    //message has successfully been received
+                    // message has successfully been received
                     // Broadcast recieved message to all clients except the client that sent the information
                     _bufferincmessage = _encoder.GetString(_message, 0, _bytesRead);
 
@@ -321,6 +321,7 @@ namespace TCP_Testproject.Classes
                         ConsoleKeyInfo _pressedKey;
                         string _message = String.Empty;
 
+                        // handle client input
                         do
                         {
                             bool _refreshScreen = false;
@@ -735,6 +736,7 @@ namespace TCP_Testproject.Classes
             }
         }
 
+        // Returns a formatted timestamp string
         private static string GetTimestampString()
         {
             return DateTime.Now.ToString("T", new CultureInfo("de-DE"));
