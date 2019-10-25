@@ -331,13 +331,13 @@ namespace TCP_Testproject.Classes
 
                             if (_pressedKey.Key == ConsoleKey.PageUp)
                             {
-                                if (chatObjects.messageData.Count - scrollOffset > Console.WindowHeight - 6 && chatObjects.messageData.Count > Console.WindowHeight - 6)
+                                if (chatObjects.messageData.Count - scrollOffset > Console.WindowHeight - 6 && chatObjects.messageData.Count > Console.WindowHeight - 6) // Scroll up
                                 {
                                     scrollOffset++;
                                     _refreshScreen = true;
                                 }
                             }
-                            else if (_pressedKey.Key == ConsoleKey.PageDown)
+                            else if (_pressedKey.Key == ConsoleKey.PageDown) // Scroll down
                             {
                                 if (scrollOffset > 0 && chatObjects.messageData.Count > Console.WindowHeight - 6)
                                 {
